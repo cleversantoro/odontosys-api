@@ -144,6 +144,7 @@ router.post("/login", login);
  *         description: Erro no servidor
  */
 router.post("/refresh", refreshToken);
+router.post("/refresh-token", refreshToken);
 
 /**
  * @swagger

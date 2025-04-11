@@ -63,6 +63,20 @@ exports.refreshToken = async (req, res) => {
   }
 };
 
+// exports.refreshToken = async (req, res) => {
+//   const { refreshToken } = req.body;
+//   if (!refreshToken) return res.status(401).json({ message: "Refresh token required" });
+
+//   try {
+//     const payload = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
+//     const newAccessToken = jwt.sign({ id: payload.id }, process.env.JWT_SECRET, { expiresIn: "15m" });
+//     return res.json({ accessToken: newAccessToken });
+//   } catch (err) {
+//     return res.status(403).json({ message: "Invalid refresh token" });
+//   }
+// };
+
+
 exports.logout = async (req, res) => {
   try {
     const { token } = req.body;
