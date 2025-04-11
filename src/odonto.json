@@ -1,0 +1,1617 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "OdontoSys API",
+    "version": "1.0.0",
+    "description": "Documentação da API do Sistema OdontoSys. [Postman Collection](http://localhost:5000/odonto.json)"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:5000",
+      "description": "Servidor Local"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "schemas": {
+      "Appointment": {
+        "type": "object",
+        "required": [
+          "patientId",
+          "professionalId",
+          "date"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "ID único da consulta"
+          },
+          "patientId": {
+            "type": "integer",
+            "description": "ID do paciente agendado"
+          },
+          "professionalId": {
+            "type": "integer",
+            "description": "ID do profissional responsável"
+          },
+          "date": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Data e hora da consulta"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "Agendado",
+              "Confirmado",
+              "Cancelado",
+              "Realizado"
+            ],
+            "description": "Status atual da consulta"
+          },
+          "notes": {
+            "type": "string",
+            "description": "Observações adicionais"
+          }
+        },
+        "example": {
+          "id": 1,
+          "patientId": 3,
+          "professionalId": 7,
+          "date": "2024-06-15T14:30:00.000Z",
+          "status": "Agendado",
+          "notes": "Paciente precisa trazer exames anteriores."
+        }
+      },
+      "RegisterRequest": {
+        "type": "object",
+        "required": [
+          "name",
+          "email",
+          "password"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Nome do usuário"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "description": "E-mail do usuário"
+          },
+          "password": {
+            "type": "string",
+            "description": "Senha do usuário"
+          }
+        },
+        "example": {
+          "name": "João Silva",
+          "email": "joao@email.com",
+          "password": "123456"
+        }
+      },
+      "LoginRequest": {
+        "type": "object",
+        "required": [
+          "email",
+          "password"
+        ],
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email",
+            "description": "E-mail do usuário"
+          },
+          "password": {
+            "type": "string",
+            "description": "Senha do usuário"
+          }
+        },
+        "example": {
+          "email": "joao@email.com",
+          "password": "123456"
+        }
+      },
+      "AuthResponse": {
+        "type": "object",
+        "properties": {
+          "accessToken": {
+            "type": "string",
+            "description": "Token JWT de autenticação"
+          },
+          "refreshToken": {
+            "type": "string",
+            "description": "Token de atualização"
+          }
+        },
+        "example": {
+          "accessToken": "eyJhbGciOiJIUzI1NiIsInR5c...",
+          "refreshToken": "dGlzIGlzIGEgdGVzdCB0b2tlbi4uLg=="
+        }
+      },
+      "Expense": {
+        "type": "object",
+        "required": [
+          "description",
+          "amount",
+          "category",
+          "expenseDate"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "ID único da despesa"
+          },
+          "description": {
+            "type": "string",
+            "description": "Descrição da despesa"
+          },
+          "amount": {
+            "type": "number",
+            "format": "float",
+            "description": "Valor da despesa"
+          },
+          "category": {
+            "type": "string",
+            "description": "Categoria da despesa"
+          },
+          "expenseDate": {
+            "type": "string",
+            "format": "date",
+            "description": "Data da despesa"
+          },
+          "patientId": {
+            "type": "string",
+            "description": "Nome paciente"
+          },
+          "patientEmail": {
+            "type": "string",
+            "description": "Email paciente"
+          },
+          "professionalId": {
+            "type": "string",
+            "description": "nome profissional"
+          }
+        },
+        "example": {
+          "id": 1,
+          "description": "Compra de materiais de escritório",
+          "amount": 150.75,
+          "category": "Material de Escritório",
+          "expenseDate": "2024-06-15",
+          "patientId": "João da Silva",
+          "patientEmail": "joao.silva@gmail.com",
+          "professionalId": "Dr. José"
+        }
+      },
+      "Patient": {
+        "type": "object",
+        "required": [
+          "name",
+          "email",
+          "phone"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "ID único do paciente"
+          },
+          "name": {
+            "type": "string",
+            "description": "Nome do paciente"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "description": "E-mail do paciente"
+          },
+          "phone": {
+            "type": "string",
+            "description": "Telefone do paciente"
+          }
+        },
+        "example": {
+          "id": 1,
+          "name": "João Silva",
+          "email": "joao@email.com",
+          "phone": "11999999999"
+        }
+      },
+      "Payment": {
+        "type": "object",
+        "required": [
+          "patientId",
+          "amount",
+          "paymentType",
+          "paymentDate"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "ID único do pagamento"
+          },
+          "patientId": {
+            "type": "integer",
+            "description": "ID do paciente associado"
+          },
+          "amount": {
+            "type": "number",
+            "format": "float",
+            "description": "Valor do pagamento"
+          },
+          "paymentType": {
+            "type": "string",
+            "enum": [
+              "Particular",
+              "Convênio",
+              "Comissão"
+            ],
+            "description": "Tipo de pagamento"
+          },
+          "paymentDate": {
+            "type": "string",
+            "format": "date",
+            "description": "Data do pagamento"
+          }
+        },
+        "example": {
+          "id": 1,
+          "patientId": 3,
+          "amount": 250.5,
+          "paymentType": "Particular",
+          "paymentDate": "2024-06-15"
+        }
+      },
+      "ReportResponse": {
+        "type": "object",
+        "properties": {
+          "report": {
+            "type": "string",
+            "description": "URL do relatório gerado (PDF ou JSON)"
+          }
+        },
+        "example": {
+          "report": "http://localhost:5000/reports/financeiro.pdf"
+        }
+      },
+      "File": {
+        "type": "object",
+        "properties": {
+          "fileName": {
+            "type": "string",
+            "description": "Nome do arquivo salvo no servidor"
+          },
+          "url": {
+            "type": "string",
+            "description": "URL do arquivo para download ou visualização"
+          }
+        },
+        "example": {
+          "fileName": "exame123.pdf",
+          "url": "http://localhost:5000/uploads/exame123.pdf"
+        }
+      },
+      "User": {
+        "type": "object",
+        "required": [
+          "name",
+          "email"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "ID único do usuário"
+          },
+          "name": {
+            "type": "string",
+            "description": "Nome do usuário"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "description": "E-mail do usuário"
+          }
+        },
+        "example": {
+          "id": 1,
+          "name": "João Silva",
+          "email": "joao@email.com"
+        }
+      }
+    }
+  },
+  "paths": {
+    "/api/appointments": {
+      "get": {
+        "summary": "Lista todas as consultas agendadas",
+        "tags": [
+          "Consultas"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de consultas retornada com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Appointment"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token inválido ou ausente"
+          }
+        }
+      },
+      "post": {
+        "summary": "Agenda uma nova consulta",
+        "tags": [
+          "Consultas"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Appointment"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Consulta agendada com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Appointment"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Dados inválidos"
+          },
+          "401": {
+            "description": "Token inválido ou ausente"
+          }
+        }
+      }
+    },
+    "/api/appointments/{id}": {
+      "get": {
+        "summary": "Obtém uma consulta pelo ID",
+        "tags": [
+          "Consultas"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "ID da consulta a ser recuperada"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Consulta encontrada com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Appointment"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token inválido ou ausente"
+          },
+          "404": {
+            "description": "Consulta não encontrada"
+          }
+        }
+      },
+      "put": {
+        "summary": "Atualiza os dados de uma consulta existente",
+        "tags": [
+          "Consultas"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "ID da consulta a ser atualizada"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "date": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "status": {
+                    "type": "string",
+                    "enum": [
+                      "Agendado",
+                      "Confirmado",
+                      "Cancelado",
+                      "Realizado"
+                    ]
+                  },
+                  "notes": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Consulta atualizada com sucesso"
+          },
+          "400": {
+            "description": "Dados inválidos"
+          },
+          "401": {
+            "description": "Token inválido ou ausente"
+          },
+          "404": {
+            "description": "Consulta não encontrada"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Cancela uma consulta",
+        "tags": [
+          "Consultas"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "ID da consulta a ser cancelada"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Consulta cancelada com sucesso"
+          },
+          "401": {
+            "description": "Token inválido ou ausente"
+          },
+          "404": {
+            "description": "Consulta não encontrada"
+          }
+        }
+      }
+    },
+    "/api/auth/register": {
+      "post": {
+        "summary": "Registra um novo usuário",
+        "tags": [
+          "Autenticação"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Usuário registrado com sucesso"
+          },
+          "400": {
+            "description": "Dados inválidos"
+          },
+          "500": {
+            "description": "Erro no servidor"
+          }
+        }
+      }
+    },
+    "/api/auth/login": {
+      "post": {
+        "summary": "Autentica um usuário e retorna um token JWT",
+        "tags": [
+          "Autenticação"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Login realizado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Credenciais inválidas"
+          },
+          "500": {
+            "description": "Erro no servidor"
+          }
+        }
+      }
+    },
+    "/api/auth/refresh": {
+      "post": {
+        "summary": "Gera um novo access token usando refresh token",
+        "tags": [
+          "Autenticação"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "refreshToken": {
+                    "type": "string",
+                    "description": "Token de atualização"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Novo access token gerado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Token de atualização inválido ou ausente"
+          },
+          "500": {
+            "description": "Erro no servidor"
+          }
+        }
+      }
+    },
+    "/api/auth/logout": {
+      "post": {
+        "summary": "Encerra a sessão do usuário e revoga o refresh token",
+        "tags": [
+          "Autenticação"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "refreshToken": {
+                    "type": "string",
+                    "description": "Token de atualização a ser revogado"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Logout realizado com sucesso"
+          },
+          "400": {
+            "description": "Token de atualização inválido ou ausente"
+          },
+          "500": {
+            "description": "Erro no servidor"
+          }
+        }
+      }
+    },
+    "/api/expenses": {
+      "post": {
+        "summary": "Cadastra uma nova despesa",
+        "tags": [
+          "Despesas"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Expense"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Despesa cadastrada com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Expense"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Dados inválidos"
+          },
+          "401": {
+            "description": "Token inválido ou ausente"
+          }
+        }
+      }
+    },
+    "/api/google-calendar": {
+      "post": {
+        "summary": "Cadastra um novo evento no Google Calendar",
+        "tags": [
+          "Google Calendar"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Event"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Evento criado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Event"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Erro ao criar evento no Google Calendar"
+          },
+          "500": {
+            "description": "Erro interno do servidor"
+          }
+        }
+      }
+    },
+    "/api/notifications/consulta": {
+      "post": {
+        "summary": "Envia um e-mail de notificação para uma consulta agendada",
+        "tags": [
+          "Notificações"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "appointmentId": {
+                    "type": "integer",
+                    "description": "ID da consulta a ser notificada"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Notificação enviada com sucesso"
+          },
+          "400": {
+            "description": "Dados inválidos"
+          },
+          "401": {
+            "description": "Token inválido ou ausente"
+          },
+          "404": {
+            "description": "Consulta não encontrada"
+          }
+        }
+      }
+    },
+    "/api/notifications/pagamento": {
+      "post": {
+        "summary": "Envia um e-mail de notificação para um pagamento recebido",
+        "tags": [
+          "Notificações"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "paymentId": {
+                    "type": "integer",
+                    "description": "ID do pagamento a ser notificado"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Notificação enviada com sucesso"
+          },
+          "400": {
+            "description": "Dados inválidos"
+          },
+          "401": {
+            "description": "Token inválido ou ausente"
+          },
+          "404": {
+            "description": "Pagamento não encontrado"
+          }
+        }
+      }
+    },
+    "/api/patients": {
+      "get": {
+        "summary": "Lista todos os pacientes cadastrados",
+        "tags": [
+          "Pacientes"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de pacientes retornada com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Patient"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token inválido ou ausente"
+          }
+        }
+      },
+      "post": {
+        "summary": "Cadastra um novo paciente",
+        "tags": [
+          "Pacientes"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Patient"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Paciente cadastrado com sucesso"
+          },
+          "400": {
+            "description": "Dados inválidos"
+          },
+          "401": {
+            "description": "Token inválido ou ausente"
+          }
+        }
+      }
+    },
+    "/api/patients/{id}": {
+      "get": {
+        "summary": "Obtém um paciente pelo ID",
+        "tags": [
+          "Pacientes"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "ID do paciente a ser recuperado"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Paciente encontrado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Patient"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token inválido ou ausente"
+          },
+          "404": {
+            "description": "Paciente não encontrado"
+          }
+        }
+      },
+      "put": {
+        "summary": "Atualiza os dados de um paciente existente",
+        "tags": [
+          "Pacientes"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "ID do paciente a ser atualizado"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string"
+                  },
+                  "phone": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Paciente atualizado com sucesso"
+          },
+          "400": {
+            "description": "Dados inválidos"
+          },
+          "401": {
+            "description": "Token inválido ou ausente"
+          },
+          "404": {
+            "description": "Paciente não encontrado"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Remove um paciente do sistema",
+        "tags": [
+          "Pacientes"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "ID do paciente a ser removido"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Paciente removido com sucesso"
+          },
+          "401": {
+            "description": "Token inválido ou ausente"
+          },
+          "404": {
+            "description": "Paciente não encontrado"
+          }
+        }
+      }
+    },
+    "/api/payments": {
+      "get": {
+        "summary": "Lista todos os pagamentos registrados",
+        "tags": [
+          "Pagamentos"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de pagamentos retornada com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Payment"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token inválido ou ausente"
+          }
+        }
+      },
+      "post": {
+        "summary": "Registra um novo pagamento",
+        "tags": [
+          "Pagamentos"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Payment"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Pagamento registrado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Payment"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Dados inválidos"
+          },
+          "401": {
+            "description": "Token inválido ou ausente"
+          }
+        }
+      }
+    },
+    "/api/payments/{id}": {
+      "get": {
+        "summary": "Obtém um pagamento pelo ID",
+        "tags": [
+          "Pagamentos"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "ID do pagamento a ser recuperado"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Pagamento encontrado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Payment"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token inválido ou ausente"
+          },
+          "404": {
+            "description": "Pagamento não encontrado"
+          }
+        }
+      },
+      "put": {
+        "summary": "Atualiza os dados de um pagamento existente",
+        "tags": [
+          "Pagamentos"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "ID do pagamento a ser atualizado"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "amount": {
+                    "type": "number",
+                    "format": "float"
+                  },
+                  "paymentType": {
+                    "type": "string",
+                    "enum": [
+                      "Particular",
+                      "Convênio",
+                      "Comissão"
+                    ]
+                  },
+                  "paymentDate": {
+                    "type": "string",
+                    "format": "date"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Pagamento atualizado com sucesso"
+          },
+          "400": {
+            "description": "Dados inválidos"
+          },
+          "401": {
+            "description": "Token inválido ou ausente"
+          },
+          "404": {
+            "description": "Pagamento não encontrado"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Remove um pagamento do sistema",
+        "tags": [
+          "Pagamentos"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "ID do pagamento a ser removido"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Pagamento removido com sucesso"
+          },
+          "401": {
+            "description": "Token inválido ou ausente"
+          },
+          "404": {
+            "description": "Pagamento não encontrado"
+          }
+        }
+      }
+    },
+    "/api/reports/financeiro": {
+      "get": {
+        "summary": "Gera um relatório financeiro detalhado",
+        "tags": [
+          "Relatórios"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "startDate",
+            "schema": {
+              "type": "string",
+              "format": "date"
+            },
+            "required": false,
+            "description": "Data de início do relatório"
+          },
+          {
+            "in": "query",
+            "name": "endDate",
+            "schema": {
+              "type": "string",
+              "format": "date"
+            },
+            "required": false,
+            "description": "Data final do relatório"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Relatório financeiro gerado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReportResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token inválido ou ausente"
+          }
+        }
+      }
+    },
+    "/api/reports/consultas": {
+      "get": {
+        "summary": "Gera um relatório de consultas agendadas",
+        "tags": [
+          "Relatórios"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "startDate",
+            "schema": {
+              "type": "string",
+              "format": "date"
+            },
+            "required": false,
+            "description": "Data de início do relatório"
+          },
+          {
+            "in": "query",
+            "name": "endDate",
+            "schema": {
+              "type": "string",
+              "format": "date"
+            },
+            "required": false,
+            "description": "Data final do relatório"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Relatório de consultas gerado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReportResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token inválido ou ausente"
+          }
+        }
+      }
+    },
+    "/api/uploads/{patientId}": {
+      "post": {
+        "summary": "Faz o upload de um arquivo para um paciente específico",
+        "tags": [
+          "Uploads"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "patientId",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "ID do paciente associado ao arquivo"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Arquivo enviado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/File"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Nenhum arquivo enviado ou formato inválido"
+          },
+          "401": {
+            "description": "Token inválido ou ausente"
+          }
+        }
+      },
+      "get": {
+        "summary": "Lista todos os arquivos de um paciente",
+        "tags": [
+          "Uploads"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "patientId",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "ID do paciente para listar arquivos"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de arquivos retornada com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/File"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token inválido ou ausente"
+          }
+        }
+      }
+    },
+    "/api/uploads/{fileName}": {
+      "delete": {
+        "summary": "Exclui um arquivo do servidor",
+        "tags": [
+          "Uploads"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "fileName",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Nome do arquivo a ser excluído"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Arquivo excluído com sucesso"
+          },
+          "401": {
+            "description": "Token inválido ou ausente"
+          },
+          "404": {
+            "description": "Arquivo não encontrado"
+          }
+        }
+      }
+    },
+    "/api/users": {
+      "get": {
+        "summary": "Lista todos os usuários cadastrados",
+        "tags": [
+          "Usuários"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de usuários retornada com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/User"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token inválido ou ausente"
+          }
+        }
+      }
+    },
+    "/api/users/{id}": {
+      "put": {
+        "summary": "Atualiza os dados de um usuário existente",
+        "tags": [
+          "Usuários"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "ID do usuário a ser atualizado"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Usuário atualizado com sucesso"
+          },
+          "400": {
+            "description": "Dados inválidos"
+          },
+          "401": {
+            "description": "Token inválido ou ausente"
+          },
+          "404": {
+            "description": "Usuário não encontrado"
+          }
+        }
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Consultas",
+      "description": "Gerenciamento de consultas médicas"
+    },
+    {
+      "name": "Autenticação",
+      "description": "Gerenciamento de usuários e autenticação"
+    },
+    {
+      "name": "Despesas",
+      "description": "Gerenciamento de despesas do sistema"
+    },
+    {
+      "name": "Google Calendar",
+      "description": "Gerenciamento de eventos do Google Calendar"
+    },
+    {
+      "name": "Notificações",
+      "description": "Envio de notificações por e-mail sobre consultas e pagamentos"
+    },
+    {
+      "name": "Pacientes",
+      "description": "Gerenciamento de pacientes do sistema"
+    },
+    {
+      "name": "Pagamentos",
+      "description": "Gerenciamento de pagamentos e recebimentos"
+    },
+    {
+      "name": "Relatórios",
+      "description": "Geração de relatórios financeiros e de consultas"
+    },
+    {
+      "name": "Uploads",
+      "description": "Gerenciamento de arquivos (exames, documentos, imagens)"
+    },
+    {
+      "name": "Usuários",
+      "description": "Gerenciamento de usuários do sistema"
+    }
+  ]
+}
