@@ -15,27 +15,27 @@ const router = express.Router();
  * @swagger
  * components:
  *   schemas:
- *     Expense:
+ *     Despesas:
  *       type: object
  *       required:
  *         - description
  *         - amount
  *         - category
- *         - expenseDate
+ *         - despesasDate
  *       properties:
- *         patientId:
+ *         pacienteId:
  *           type: string
  *           description: Nome paciente
- *         patientEmail:
+ *         pacienteEmail:
  *           type: string
  *           description: Email paciente
- *         professionalId:
+ *         profissionalId:
  *           type: string
  *           description: nome profissional 
  *       example:
- *         patientId: "João da Silva" 
- *         patientEmail: "joao.silva@gmail.com"
- *         professionalId: "Dr. José"
+ *         pacienteId: "João da Silva" 
+ *         pacienteEmail: "joao.silva@gmail.com"
+ *         profissionalId: "Dr. José"
  */
 
 /**

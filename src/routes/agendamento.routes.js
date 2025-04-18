@@ -1,84 +1,85 @@
 const express = require("express");
 const { authenticateToken } = require("../middlewares/auth.middleware");
-const { createAppointment, getAppointments, getAppointmentById, updateAppointment, deleteAppointment } = require("../controllers/appointment.controller");
+const { createAgendamentos, getAgendamentos, getAgendamentosPorId, updateAgendamentos, deleteAgendamentos } = require("../controllers/agendamento.controller");
 
 const router = express.Router();
 
 /**
  * @swagger
  * tags:
- *   name: Consultas
- *   description: Gerenciamento de consultas médicas
+ *   name: Agendamentos
+ *   description: Gerenciamento de agendamentos
  */
 
 /**
  * @swagger
  * components:
  *   schemas:
- *     Appointment:
+ *     Agendamentos:
  *       type: object
  *       required:
- *         - patientId
- *         - professionalId
- *         - date
+ *         - pacienteId
+ *         - profissionalId
+ *         - data
+ *         - status
+ *         - obs
  *       properties:
  *         id:
  *           type: integer
- *           description: ID único da consulta
- *         patientId:
+ *           description: ID único da agendamentos
+ *         pacienteId:
  *           type: integer
  *           description: ID do paciente agendado
- *         professionalId:
+ *         profissionalId:
  *           type: integer
  *           description: ID do profissional responsável
- *         date:
+ *         data:
  *           type: string
  *           format: date-time
- *           description: Data e hora da consulta
+ *           description: Data e hora da agendamentos
  *         status:
  *           type: string
  *           enum: ["Agendado", "Confirmado", "Cancelado", "Realizado"]
- *           description: Status atual da consulta
- *         notes:
+ *           description: Status atual da agendamentos
+ *         obs:
  *           type: string
  *           description: Observações adicionais
  *       example:
- *         id: 1
- *         patientId: 3
- *         professionalId: 7
- *         date: "2024-06-15T14:30:00.000Z"
+ *         pacienteId: 1
+ *         profissionalId: 1
+ *         data: "2024-06-15T14:30:00.000Z"
  *         status: "Agendado"
- *         notes: "Paciente precisa trazer exames anteriores."
+ *         obs: "Paciente precisa trazer exames anteriores."
  */
 
 /**
  * @swagger
- * /api/appointments:
+ * /api/agendamentos:
  *   get:
- *     summary: Lista todas as consultas agendadas
- *     tags: [Consultas]
+ *     summary: Lista todos as agendamentos registrados
+ *     tags: [Agendamentos]
  *     security:
  *       - BearerAuth: []
  *     responses:
  *       200:
- *         description: Lista de consultas retornada com sucesso
+ *         description: Lista de agendamentos retornada com sucesso
  *         content:
  *           application/json:
  *             schema:
  *               type: array
  *               items:
- *                 $ref: '#/components/schemas/Appointment'
+ *                 $ref: '#/components/schemas/Agendamentos'
  *       401:
  *         description: Token inválido ou ausente
  */
-router.get("/", authenticateToken, getAppointments);
+router.get("/", authenticateToken, getAgendamentos);
 
 /**
  * @swagger
- * /api/appointments/{id}:
+ * /api/agendamentos/{id}:
  *   get:
- *     summary: Obtém uma consulta pelo ID
- *     tags: [Consultas]
+ *     summary: Obtém um agendamento pelo ID
+ *     tags: [Agendamentos]
  *     security:
  *       - BearerAuth: []
  *     parameters:
@@ -87,27 +88,27 @@ router.get("/", authenticateToken, getAppointments);
  *         required: true
  *         schema:
  *           type: integer
- *         description: ID da consulta a ser recuperada
+ *         description: ID da agendamentos a ser recuperada
  *     responses:
  *       200:
- *         description: Consulta encontrada com sucesso
+ *         description: Agendamentos encontrada com sucesso
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Appointment'
+ *               $ref: '#/components/schemas/Agendamentos'
  *       404:
- *         description: Consulta não encontrada
+ *         description: Agendamentos não encontrada
  *       401:
  *         description: Token inválido ou ausente
  */
-router.get("/:id", authenticateToken, getAppointmentById);
+router.get("/:id", authenticateToken, getAgendamentosPorId);
 
 /**
  * @swagger
- * /api/appointments:
+ * /api/agendamentos:
  *   post:
- *     summary: Agenda uma nova consulta
- *     tags: [Consultas]
+ *     summary: Realiza um novo agendamento
+ *     tags: [Agendamentos]
  *     security:
  *       - BearerAuth: []
  *     requestBody:
@@ -115,27 +116,27 @@ router.get("/:id", authenticateToken, getAppointmentById);
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/Appointment'
+ *             $ref: '#/components/schemas/Agendamentos'
  *     responses:
  *       201:
- *         description: Consulta agendada com sucesso
+ *         description: Agendamentos agendada com sucesso
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Appointment'
+ *               $ref: '#/components/schemas/Agendamentos'
  *       400:
  *         description: Dados inválidos
  *       401:
  *         description: Token inválido ou ausente
  */
-router.post("/", authenticateToken, createAppointment);
+router.post("/", authenticateToken, createAgendamentos);
 
 /**
  * @swagger
- * /api/appointments/{id}:
+ * /api/agendamentos/{id}:
  *   put:
- *     summary: Atualiza os dados de uma consulta existente
- *     tags: [Consultas]
+ *     summary: Atualiza os dados de um agendamento existente
+ *     tags: [Agendamentos]
  *     security:
  *       - BearerAuth: []
  *     parameters:
@@ -144,7 +145,7 @@ router.post("/", authenticateToken, createAppointment);
  *         required: true
  *         schema:
  *           type: integer
- *         description: ID da consulta a ser atualizada
+ *         description: ID da agendamentos a ser atualizada
  *     requestBody:
  *       required: true
  *       content:
@@ -162,22 +163,22 @@ router.post("/", authenticateToken, createAppointment);
  *                 type: string
  *     responses:
  *       200:
- *         description: Consulta atualizada com sucesso
+ *         description: Agendamento atualizado com sucesso
  *       400:
  *         description: Dados inválidos
  *       404:
- *         description: Consulta não encontrada
+ *         description: Agendamento não encontrado
  *       401:
  *         description: Token inválido ou ausente
  */
-router.put("/:id", authenticateToken, updateAppointment);
+router.put("/:id", authenticateToken, updateAgendamentos);
 
 /**
  * @swagger
- * /api/appointments/{id}:
+ * /api/agendamentos/{id}:
  *   delete:
- *     summary: Cancela uma consulta
- *     tags: [Consultas]
+ *     summary: Cancela um agendamento
+ *     tags: [Agendamentos]
  *     security:
  *       - BearerAuth: []
  *     parameters:
@@ -186,16 +187,16 @@ router.put("/:id", authenticateToken, updateAppointment);
  *         required: true
  *         schema:
  *           type: integer
- *         description: ID da consulta a ser cancelada
+ *         description: ID do agendamento a ser cancelado
  *     responses:
  *       200:
- *         description: Consulta cancelada com sucesso
+ *         description: Agendamento cancelado com sucesso
  *       404:
- *         description: Consulta não encontrada
+ *         description: Agendamento não encontrado
  *       401:
  *         description: Token inválido ou ausente
  */
-router.delete("/:id", authenticateToken, deleteAppointment);
+router.delete("/:id", authenticateToken, deleteAgendamentos);
 
 module.exports = router;
 

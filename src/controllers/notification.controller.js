@@ -1,35 +1,35 @@
 const { sendEmail } = require("../services/email.service");
-const Appointment = require("../models/appointment.model");
-const Payment = require("../models/payment.model");
-const Patient = require("../models/patient.model");
+const Agendamento = require("../models/agendamento.model");
+const Pagamento = require("../models/pagamento.model");
+const Paciente = require("../models/paciente.model");
 
-exports.sendAppointmentNotification = async (req, res) => {
+exports.sendAgendamentosNotification = async (req, res) => {
   try {
-    const { appointmentId } = req.body;
-    const appointment = await Appointment.findByPk(appointmentId, { include: "patient" });
+    const { agendamentosId } = req.body;
+    const agendamentos = await Agendamentos.findByPk(agendamentosId, { include: "paciente" });
 
-    if (!appointment) return res.status(404).json({ error: "Consulta não encontrada" });
+    if (!agendamentos) return res.status(404).json({ error: "Agendamentos não encontrada" });
 
-    const message = `Olá ${appointment.patient.name},\n\nSua consulta está agendada para ${appointment.date}.\n\nAtenciosamente,\nClínica COSB`;
+    const message = `Olá ${agendamentos.paciente.name},\n\nSua agendamentos está agendada para ${agendamentos.date}.\n\nAtenciosamente,\nClínica COSB`;
 
-    await sendEmail(appointment.patient.email, "Lembrete de Consulta", message);
+    await sendEmail(agendamentos.paciente.email, "Lembrete de Agendamentos", message);
 
     res.json({ message: "E-mail de lembrete enviado com sucesso!" });
   } catch (error) {
-    res.status(500).json({ error: "Erro ao enviar notificação de consulta" });
+    res.status(500).json({ error: "Erro ao enviar notificação de agendamentos" });
   }
 };
 
-exports.sendPaymentNotification = async (req, res) => {
+exports.sendPagamentoNotification = async (req, res) => {
   try {
-    const { paymentId } = req.body;
-    const payment = await Payment.findByPk(paymentId, { include: "patient" });
+    const { pagamentoId } = req.body;
+    const pagamento = await Pagamento.findByPk(pagamentoId, { include: "paciente" });
 
-    if (!payment) return res.status(404).json({ error: "Pagamento não encontrado" });
+    if (!pagamento) return res.status(404).json({ error: "Pagamento não encontrado" });
 
-    const message = `Olá ${payment.patient.name},\n\nO pagamento de R$${payment.amount} referente ao serviço foi recebido com sucesso.\n\nAtenciosamente,\nClínica COSB`;
+    const message = `Olá ${pagamento.paciente.nome},\n\nO pagamento de R$${pagamento.valor} referente ao serviço foi recebido com sucesso.\n\nAtenciosamente,\nClínica COSB`;
 
-    await sendEmail(payment.patient.email, "Confirmação de Pagamento", message);
+    await sendEmail(pagamento.paciente.email, "Confirmação de Pagamento", message);
 
     res.json({ message: "E-mail de confirmação enviado com sucesso!" });
   } catch (error) {

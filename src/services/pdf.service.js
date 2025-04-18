@@ -14,26 +14,26 @@ exports.generatePDF = (data) => {
     doc.fontSize(18).text(data.title, { align: "center" });
     doc.moveDown();
 
-    if (data.payments) {
+    if (data.pagamentos) {
       doc.fontSize(14).text("Pagamentos:", { underline: true });
-      data.payments.forEach((p) => {
-        doc.fontSize(12).text(`Paciente: ${p.patientId}, Valor: R$${p.amount}, Tipo: ${p.paymentType}`);
+      data.pagamentos.forEach((p) => {
+        doc.fontSize(12).text(`Paciente: ${p.pacienteId}, Valor: R$${p.amount}, Tipo: ${p.pagamentoType}`);
       });
       doc.moveDown();
     }
 
-    if (data.expenses) {
+    if (data.despesass) {
       doc.fontSize(14).text("Despesas:", { underline: true });
-      data.expenses.forEach((e) => {
+      data.despesass.forEach((e) => {
         doc.fontSize(12).text(`Descrição: ${e.description}, Valor: R$${e.amount}, Categoria: ${e.category}`);
       });
       doc.moveDown();
     }
 
-    if (data.appointments) {
-      doc.fontSize(14).text("Consultas:", { underline: true });
-      data.appointments.forEach((a) => {
-        doc.fontSize(12).text(`Paciente: ${a.patientId}, Profissional: ${a.professionalId}, Data: ${a.date}`);
+    if (data.agendamentos) {
+      doc.fontSize(14).text("Agendamentos:", { underline: true });
+      data.agendamentos.forEach((a) => {
+        doc.fontSize(12).text(`Paciente: ${a.pacienteId}, Profissional: ${a.profissionalId}, Data: ${a.date}`);
       });
       doc.moveDown();
     }

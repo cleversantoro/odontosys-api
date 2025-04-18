@@ -1,13 +1,13 @@
 const calendar = require("../config/googleAuth");
 
-exports.createGoogleCalendarEvent = async (appointment) => {
+exports.createGoogleCalendarEvent = async (agendamentos) => {
   try {
     const event = {
-      summary: `Consulta com ${appointment.professionalId}`,
-      description: `Consulta para o paciente ${appointment.patientId}`,
-      start: { dateTime: appointment.date, timeZone: "America/Sao_Paulo" },
-      end: { dateTime: new Date(new Date(appointment.date).getTime() + 60 * 60000), timeZone: "America/Sao_Paulo" },
-      attendees: [{ email: appointment.patientEmail }],
+      summary: `Agendamentos com ${agendamentos.profissionalId}`,
+      description: `Agendamentos para o paciente ${agendamentos.pacienteId}`,
+      start: { dateTime: agendamentos.date, timeZone: "America/Sao_Paulo" },
+      end: { dateTime: new Date(new Date(agendamentos.date).getTime() + 60 * 60000), timeZone: "America/Sao_Paulo" },
+      attendees: [{ email: agendamentos.pacienteEmail }],
       reminders: { useDefault: true },
     };
 

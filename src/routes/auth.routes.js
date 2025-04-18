@@ -17,41 +17,41 @@ const router = express.Router();
  *     RegisterRequest:
  *       type: object
  *       required:
- *         - name
+ *         - nome
  *         - email
- *         - password
+ *         - senha
  *       properties:
- *         name:
+ *         nome:
  *           type: string
  *           description: Nome do usuário
  *         email:
  *           type: string
  *           format: email
  *           description: E-mail do usuário
- *         password:
+ *         senha:
  *           type: string
  *           description: Senha do usuário
  *       example:
- *         name: "João Silva"
+ *         nome: "João Silva"
  *         email: "joao@email.com"
- *         password: "123456"
+ *         senha: "123456"
  *
  *     LoginRequest:
  *       type: object
  *       required:
  *         - email
- *         - password
+ *         - senha
  *       properties:
  *         email:
  *           type: string
  *           format: email
  *           description: E-mail do usuário
- *         password:
+ *         senha:
  *           type: string
  *           description: Senha do usuário
  *       example:
  *         email: "joao@email.com"
- *         password: "123456"
+ *         senha: "123456"
  *
  *     AuthResponse:
  *       type: object
@@ -144,7 +144,6 @@ router.post("/login", login);
  *         description: Erro no servidor
  */
 router.post("/refresh", refreshToken);
-router.post("/refresh-token", refreshToken);
 
 /**
  * @swagger

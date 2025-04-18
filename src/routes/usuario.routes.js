@@ -1,5 +1,5 @@
 const express = require("express");
-const { getAllUsers, createUser } = require("../controllers/user.controller");
+const { getAllUsuarios, createUsuario } = require("../controllers/usuario.controller");
 
 const router = express.Router();
 
@@ -14,7 +14,7 @@ const router = express.Router();
  * @swagger
  * components:
  *   schemas:
- *     User:
+ *     Usuario:
  *       type: object
  *       required:
  *         - name
@@ -38,7 +38,7 @@ const router = express.Router();
 
 /**
  * @swagger
- * /api/users:
+ * /api/usuarios:
  *   get:
  *     summary: Lista todos os usuários cadastrados
  *     tags: [Usuários]
@@ -52,15 +52,15 @@ const router = express.Router();
  *             schema:
  *               type: array
  *               items:
- *                 $ref: '#/components/schemas/User'
+ *                 $ref: '#/components/schemas/Usuario'
  *       401:
  *         description: Token inválido ou ausente
  */
-router.get("/", getAllUsers);
+router.get("/", getAllUsuarios);
 
 /**
  * @swagger
- * /api/users/{id}:
+ * /api/usuarios/{id}:
  *   put:
  *     summary: Atualiza os dados de um usuário existente
  *     tags: [Usuários]
@@ -94,6 +94,6 @@ router.get("/", getAllUsers);
  *       401:
  *         description: Token inválido ou ausente
  */
-router.post("/", createUser);
+router.post("/", createUsuario);
 
 module.exports = router;

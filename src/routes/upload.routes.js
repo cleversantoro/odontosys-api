@@ -32,7 +32,7 @@ const router = express.Router();
 
 /**
  * @swagger
- * /api/uploads/{patientId}:
+ * /api/uploads/{pacienteId}:
  *   post:
  *     summary: Faz o upload de um arquivo para um paciente específico
  *     tags: [Uploads]
@@ -40,7 +40,7 @@ const router = express.Router();
  *       - BearerAuth: []
  *     parameters:
  *       - in: path
- *         name: patientId
+ *         name: pacienteId
  *         required: true
  *         schema:
  *           type: integer
@@ -67,11 +67,11 @@ const router = express.Router();
  *       401:
  *         description: Token inválido ou ausente
  */
-router.post("/:patientId", authenticateToken, upload.single("file"), uploadFile);
+router.post("/:pacienteId", authenticateToken, upload.single("file"), uploadFile);
 
 /**
  * @swagger
- * /api/uploads/{patientId}:
+ * /api/uploads/{pacienteId}:
  *   get:
  *     summary: Lista todos os arquivos de um paciente
  *     tags: [Uploads]
@@ -79,7 +79,7 @@ router.post("/:patientId", authenticateToken, upload.single("file"), uploadFile)
  *       - BearerAuth: []
  *     parameters:
  *       - in: path
- *         name: patientId
+ *         name: pacienteId
  *         required: true
  *         schema:
  *           type: integer
@@ -96,7 +96,7 @@ router.post("/:patientId", authenticateToken, upload.single("file"), uploadFile)
  *       401:
  *         description: Token inválido ou ausente
  */
-router.get("/:patientId", authenticateToken, getFiles);
+router.get("/:pacienteId", authenticateToken, getFiles);
 
 /**
  * @swagger

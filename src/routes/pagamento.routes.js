@@ -1,6 +1,6 @@
 const express = require("express");
 const { authenticateToken } = require("../middlewares/auth.middleware");
-const { createPayment, getPayments, getPaymentById, updatePayment, deletePayment } = require("../controllers/payment.controller");
+const { createPagamento, getPagamentos, getPagamentoById, updatePagamento, deletePagamento } = require("../controllers/pagamento.controller");
 
 const router = express.Router();
 
@@ -15,43 +15,43 @@ const router = express.Router();
  * @swagger
  * components:
  *   schemas:
- *     Payment:
+ *     Pagamento:
  *       type: object
  *       required:
- *         - patientId
+ *         - pacienteId
  *         - amount
- *         - paymentType
- *         - paymentDate
+ *         - pagamentoType
+ *         - pagamentoDate
  *       properties:
  *         id:
  *           type: integer
  *           description: ID único do pagamento
- *         patientId:
+ *         pacienteId:
  *           type: integer
  *           description: ID do paciente associado
  *         amount:
  *           type: number
  *           format: float
  *           description: Valor do pagamento
- *         paymentType:
+ *         pagamentoType:
  *           type: string
  *           enum: ["Particular", "Convênio", "Comissão"]
  *           description: Tipo de pagamento
- *         paymentDate:
+ *         pagamentoDate:
  *           type: string
  *           format: date
  *           description: Data do pagamento
  *       example:
  *         id: 1
- *         patientId: 3
+ *         pacienteId: 3
  *         amount: 250.50
- *         paymentType: "Particular"
- *         paymentDate: "2024-06-15"
+ *         pagamentoType: "Particular"
+ *         pagamentoDate: "2024-06-15"
  */
 
 /**
  * @swagger
- * /api/payments:
+ * /api/pagamentos:
  *   get:
  *     summary: Lista todos os pagamentos registrados
  *     tags: [Pagamentos]
@@ -65,15 +65,15 @@ const router = express.Router();
  *             schema:
  *               type: array
  *               items:
- *                 $ref: '#/components/schemas/Payment'
+ *                 $ref: '#/components/schemas/Pagamento'
  *       401:
  *         description: Token inválido ou ausente
  */
-router.get("/", authenticateToken, getPayments);
+router.get("/", authenticateToken, getPagamentos);
 
 /**
  * @swagger
- * /api/payments/{id}:
+ * /api/pagamentos/{id}:
  *   get:
  *     summary: Obtém um pagamento pelo ID
  *     tags: [Pagamentos]
@@ -92,17 +92,17 @@ router.get("/", authenticateToken, getPayments);
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Payment'
+ *               $ref: '#/components/schemas/Pagamento'
  *       404:
  *         description: Pagamento não encontrado
  *       401:
  *         description: Token inválido ou ausente
  */
-router.get("/:id", authenticateToken, getPaymentById);
+router.get("/:id", authenticateToken, getPagamentoById);
 
 /**
  * @swagger
- * /api/payments:
+ * /api/pagamentos:
  *   post:
  *     summary: Registra um novo pagamento
  *     tags: [Pagamentos]
@@ -113,24 +113,24 @@ router.get("/:id", authenticateToken, getPaymentById);
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/Payment'
+ *             $ref: '#/components/schemas/Pagamento'
  *     responses:
  *       201:
  *         description: Pagamento registrado com sucesso
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Payment'
+ *               $ref: '#/components/schemas/Pagamento'
  *       400:
  *         description: Dados inválidos
  *       401:
  *         description: Token inválido ou ausente
  */
-router.post("/", authenticateToken, createPayment);
+router.post("/", authenticateToken, createPagamento);
 
 /**
  * @swagger
- * /api/payments/{id}:
+ * /api/pagamentos/{id}:
  *   put:
  *     summary: Atualiza os dados de um pagamento existente
  *     tags: [Pagamentos]
@@ -153,10 +153,10 @@ router.post("/", authenticateToken, createPayment);
  *               amount:
  *                 type: number
  *                 format: float
- *               paymentType:
+ *               pagamentoType:
  *                 type: string
  *                 enum: ["Particular", "Convênio", "Comissão"]
- *               paymentDate:
+ *               pagamentoDate:
  *                 type: string
  *                 format: date
  *     responses:
@@ -169,11 +169,11 @@ router.post("/", authenticateToken, createPayment);
  *       401:
  *         description: Token inválido ou ausente
  */
-router.put("/:id", authenticateToken, updatePayment);
+router.put("/:id", authenticateToken, updatePagamento);
 
 /**
  * @swagger
- * /api/payments/{id}:
+ * /api/pagamentos/{id}:
  *   delete:
  *     summary: Remove um pagamento do sistema
  *     tags: [Pagamentos]
@@ -194,6 +194,6 @@ router.put("/:id", authenticateToken, updatePayment);
  *       401:
  *         description: Token inválido ou ausente
  */
-router.delete("/:id", authenticateToken, deletePayment);
+router.delete("/:id", authenticateToken, deletePagamento);
 
 module.exports = router;

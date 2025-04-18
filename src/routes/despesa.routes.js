@@ -1,6 +1,6 @@
 const express = require("express");
 const { authenticateToken } = require("../middlewares/auth.middleware");
-const { createExpense, getExpenses, getExpenseById, updateExpense, deleteExpense } = require("../controllers/expense.controller");
+const { createDespesas, getDespesas, getDespesasById, updateDespesas, deleteDespesas } = require("../controllers/despesa.controller");
 
 const router = express.Router();
 
@@ -15,13 +15,13 @@ const router = express.Router();
  * @swagger
  * components:
  *   schemas:
- *     Expense:
+ *     Despesas:
  *       type: object
  *       required:
  *         - description
  *         - amount
  *         - category
- *         - expenseDate
+ *         - despesasDate
  *       properties:
  *         id:
  *           type: integer
@@ -36,7 +36,7 @@ const router = express.Router();
  *         category:
  *           type: string
  *           description: Categoria da despesa
- *         expenseDate:
+ *         despesasDate:
  *           type: string
  *           format: date
  *           description: Data da despesa
@@ -45,12 +45,12 @@ const router = express.Router();
  *         description: Compra de materiais de escritório
  *         amount: 150.75
  *         category: Material de Escritório
- *         expenseDate: "2024-06-15"
+ *         despesasDate: "2024-06-15"
  */
 
 /**
  * @swagger
- * /api/expenses:
+ * /api/despesass:
  *   post:
  *     summary: Cadastra uma nova despesa
  *     tags: [Despesas]
@@ -61,19 +61,19 @@ const router = express.Router();
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/Expense'
+ *             $ref: '#/components/schemas/Despesas'
  *     responses:
  *       201:
  *         description: Despesa cadastrada com sucesso
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Expense'
+ *               $ref: '#/components/schemas/Despesas'
  *       400:
  *         description: Dados inválidos
  *       401:
  *         description: Token inválido ou ausente
  */
-router.post("/", authenticateToken, createExpense);
+router.post("/", authenticateToken, createDespesas);
 
 module.exports = router;

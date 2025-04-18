@@ -1,6 +1,6 @@
 const express = require("express");
 const { authenticateToken } = require("../middlewares/auth.middleware");
-const { createPatient, getPatients, getPatientById, updatePatient, deletePatient } = require("../controllers/patient.controller");
+const { createPaciente, getPacientes, getPacienteById, updatePaciente, deletePaciente } = require("../controllers/paciente.controller");
 
 const router = express.Router();
 
@@ -15,7 +15,7 @@ const router = express.Router();
  * @swagger
  * components:
  *   schemas:
- *     Patient:
+ *     Paciente:
  *       type: object
  *       required:
  *         - name
@@ -54,7 +54,7 @@ const router = express.Router();
 
 /**
  * @swagger
- * /api/patients:
+ * /api/pacientes:
  *   get:
  *     summary: Lista todos os pacientes cadastrados
  *     tags: [Pacientes]
@@ -68,15 +68,15 @@ const router = express.Router();
  *             schema:
  *               type: array
  *               items:
- *                 $ref: '#/components/schemas/Patient'
+ *                 $ref: '#/components/schemas/Paciente'
  *       401:
  *         description: Token inválido ou ausente
  */
-router.get("/", authenticateToken, getPatients);
+router.get("/", authenticateToken, getPacientes);
 
 /**
  * @swagger
- * /api/patients/{id}:
+ * /api/pacientes/{id}:
  *   get:
  *     summary: Obtém um paciente pelo ID
  *     tags: [Pacientes]
@@ -95,17 +95,17 @@ router.get("/", authenticateToken, getPatients);
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Patient'
+ *               $ref: '#/components/schemas/Paciente'
  *       404:
  *         description: Paciente não encontrado
  *       401:
  *         description: Token inválido ou ausente
  */
-router.get("/:id", authenticateToken, getPatientById);
+router.get("/:id", authenticateToken, getPacienteById);
 
 /**
  * @swagger
- * /api/patients:
+ * /api/pacientes:
  *   post:
  *     summary: Cadastra um novo paciente
  *     tags: [Pacientes]
@@ -116,7 +116,7 @@ router.get("/:id", authenticateToken, getPatientById);
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/Patient'
+ *             $ref: '#/components/schemas/Paciente'
  *     responses:
  *       201:
  *         description: Paciente cadastrado com sucesso
@@ -125,11 +125,11 @@ router.get("/:id", authenticateToken, getPatientById);
  *       401:
  *         description: Token inválido ou ausente
  */
-router.post("/", authenticateToken, createPatient);
+router.post("/", authenticateToken, createPaciente);
 
 /**
  * @swagger
- * /api/patients/{id}:
+ * /api/pacientes/{id}:
  *   put:
  *     summary: Atualiza os dados de um paciente existente
  *     tags: [Pacientes]
@@ -165,11 +165,11 @@ router.post("/", authenticateToken, createPatient);
  *       401:
  *         description: Token inválido ou ausente
  */
-router.put("/:id", authenticateToken, updatePatient);
+router.put("/:id", authenticateToken, updatePaciente);
 
 /**
  * @swagger
- * /api/patients/{id}:
+ * /api/pacientes/{id}:
  *   delete:
  *     summary: Remove um paciente do sistema
  *     tags: [Pacientes]
@@ -190,6 +190,6 @@ router.put("/:id", authenticateToken, updatePatient);
  *       401:
  *         description: Token inválido ou ausente
  */
-router.delete("/:id", authenticateToken, deletePatient);
+router.delete("/:id", authenticateToken, deletePaciente);
 
 module.exports = router;

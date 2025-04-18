@@ -1,17 +1,17 @@
-const Payment = require("../models/payment.model");
-const Expense = require("../models/expense.model");
-const Appointment = require("../models/appointment.model");
+const Pagamento = require("../models/pagamento.model");
+const Despesa = require("../models/despesa.model");
+const Agendamento = require("../models/agendamento.model");
 const { generatePDF } = require("../services/pdf.service");
 
 exports.generateFinancialReport = async (req, res) => {
   try {
-    const payments = await Payment.findAll();
-    const expenses = await Expense.findAll();
+    const pagamentos = await Pagamento.findAll();
+    const despesass = await Despesas.findAll();
 
     const data = {
       title: "Relatório Financeiro",
-      payments,
-      expenses,
+      pagamentos,
+      despesass,
     };
 
     const pdfBuffer = await generatePDF(data);
@@ -24,21 +24,21 @@ exports.generateFinancialReport = async (req, res) => {
   }
 };
 
-exports.generateAppointmentReport = async (req, res) => {
+exports.generateAgendamentosReport = async (req, res) => {
   try {
-    const appointments = await Appointment.findAll();
+    const agendamentos = await Agendamentos.findAll();
 
     const data = {
-      title: "Relatório de Consultas",
-      appointments,
+      title: "Relatório de Agendamentos",
+      agendamentos,
     };
 
     const pdfBuffer = await generatePDF(data);
 
     res.setHeader("Content-Type", "application/pdf");
-    res.setHeader("Content-Disposition", "attachment; filename=relatorio_consultas.pdf");
+    res.setHeader("Content-Disposition", "attachment; filename=relatorio_agendamentos.pdf");
     res.send(pdfBuffer);
   } catch (error) {
-    res.status(500).json({ error: "Erro ao gerar relatório de consultas" });
+    res.status(500).json({ error: "Erro ao gerar relatório de agendamentos" });
   }
 };

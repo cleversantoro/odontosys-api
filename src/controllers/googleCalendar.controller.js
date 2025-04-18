@@ -1,19 +1,19 @@
 const { createGoogleCalendarEvent } = require("../services/googleCalendar.service");
-const Appointment = require("../models/appointment.model");
-const Patient = require("../models/patient.model");
+const Agendamento = require("../models/agendamento.model");
+const Paciente = require("../models/paciente.model");
 
 exports.createCalendarEvent = async (req, res) => {
   try {
-    const { appointmentId } = req.body;
-    const appointment = await Appointment.findByPk(appointmentId, { include: "patient" });
+    const { agendamentosId } = req.body;
+    const agendamentos = await Agendamentos.findByPk(agendamentosId, { include: "paciente" });
 
-    if (!appointment) return res.status(404).json({ error: "Consulta não encontrada" });
+    if (!agendamentos) return res.status(404).json({ error: "Agendamentos não encontrada" });
 
     const event = await createGoogleCalendarEvent({
-      date: appointment.date,
-      patientId: appointment.patient.name,
-      patientEmail: appointment.patient.email,
-      professionalId: appointment.professionalId,
+      date: agendamentos.date,
+      pacienteId: agendamentos.paciente.name,
+      pacienteEmail: agendamentos.paciente.email,
+      profissionalId: agendamentos.profissionalId,
     });
 
     res.json({ message: "Evento criado no Google Calendar!", event });

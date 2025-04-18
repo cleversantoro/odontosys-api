@@ -1,6 +1,6 @@
 const express = require("express");
 const { authenticateToken } = require("../middlewares/auth.middleware");
-const { generateFinancialReport, generateAppointmentReport } = require("../controllers/report.controller");
+const { generateFinancialReport, generateAgendamentosReport } = require("../controllers/report.controller");
 
 const router = express.Router();
 
@@ -8,7 +8,7 @@ const router = express.Router();
  * @swagger
  * tags:
  *   name: Relatórios
- *   description: Geração de relatórios financeiros e de consultas
+ *   description: Geração de relatórios financeiros e de agendamentos
  */
 
 /**
@@ -62,9 +62,9 @@ router.get("/financeiro", authenticateToken, generateFinancialReport);
 
 /**
  * @swagger
- * /api/reports/consultas:
+ * /api/reports/agendamentos:
  *   get:
- *     summary: Gera um relatório de consultas agendadas
+ *     summary: Gera um relatório de agendamento realizados
  *     tags: [Relatórios]
  *     security:
  *       - BearerAuth: []
@@ -85,7 +85,7 @@ router.get("/financeiro", authenticateToken, generateFinancialReport);
  *         description: Data final do relatório
  *     responses:
  *       200:
- *         description: Relatório de consultas gerado com sucesso
+ *         description: Relatório de agendamentos gerado com sucesso
  *         content:
  *           application/json:
  *             schema:
@@ -93,6 +93,6 @@ router.get("/financeiro", authenticateToken, generateFinancialReport);
  *       401:
  *         description: Token inválido ou ausente
  */
-router.get("/consultas", authenticateToken, generateAppointmentReport);
+router.get("/agendamentos", authenticateToken, generateAgendamentosReport);
 
 module.exports = router;

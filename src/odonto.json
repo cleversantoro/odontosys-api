@@ -20,30 +20,32 @@
       }
     },
     "schemas": {
-      "Appointment": {
+      "Agendamentos": {
         "type": "object",
         "required": [
-          "patientId",
-          "professionalId",
-          "date"
+          "pacienteId",
+          "profissionalId",
+          "data",
+          "status",
+          "obs"
         ],
         "properties": {
           "id": {
             "type": "integer",
-            "description": "ID único da consulta"
+            "description": "ID único da agendamentos"
           },
-          "patientId": {
+          "pacienteId": {
             "type": "integer",
             "description": "ID do paciente agendado"
           },
-          "professionalId": {
+          "profissionalId": {
             "type": "integer",
             "description": "ID do profissional responsável"
           },
-          "date": {
+          "data": {
             "type": "string",
             "format": "date-time",
-            "description": "Data e hora da consulta"
+            "description": "Data e hora da agendamentos"
           },
           "status": {
             "type": "string",
@@ -53,31 +55,30 @@
               "Cancelado",
               "Realizado"
             ],
-            "description": "Status atual da consulta"
+            "description": "Status atual da agendamentos"
           },
-          "notes": {
+          "obs": {
             "type": "string",
             "description": "Observações adicionais"
           }
         },
         "example": {
-          "id": 1,
-          "patientId": 3,
-          "professionalId": 7,
-          "date": "2024-06-15T14:30:00.000Z",
+          "pacienteId": 1,
+          "profissionalId": 1,
+          "data": "2024-06-15T14:30:00.000Z",
           "status": "Agendado",
-          "notes": "Paciente precisa trazer exames anteriores."
+          "obs": "Paciente precisa trazer exames anteriores."
         }
       },
       "RegisterRequest": {
         "type": "object",
         "required": [
-          "name",
+          "nome",
           "email",
-          "password"
+          "senha"
         ],
         "properties": {
-          "name": {
+          "nome": {
             "type": "string",
             "description": "Nome do usuário"
           },
@@ -86,22 +87,22 @@
             "format": "email",
             "description": "E-mail do usuário"
           },
-          "password": {
+          "senha": {
             "type": "string",
             "description": "Senha do usuário"
           }
         },
         "example": {
-          "name": "João Silva",
+          "nome": "João Silva",
           "email": "joao@email.com",
-          "password": "123456"
+          "senha": "123456"
         }
       },
       "LoginRequest": {
         "type": "object",
         "required": [
           "email",
-          "password"
+          "senha"
         ],
         "properties": {
           "email": {
@@ -109,14 +110,14 @@
             "format": "email",
             "description": "E-mail do usuário"
           },
-          "password": {
+          "senha": {
             "type": "string",
             "description": "Senha do usuário"
           }
         },
         "example": {
           "email": "joao@email.com",
-          "password": "123456"
+          "senha": "123456"
         }
       },
       "AuthResponse": {
@@ -136,13 +137,13 @@
           "refreshToken": "dGlzIGlzIGEgdGVzdCB0b2tlbi4uLg=="
         }
       },
-      "Expense": {
+      "Despesas": {
         "type": "object",
         "required": [
           "description",
           "amount",
           "category",
-          "expenseDate"
+          "despesasDate"
         ],
         "properties": {
           "id": {
@@ -162,20 +163,20 @@
             "type": "string",
             "description": "Categoria da despesa"
           },
-          "expenseDate": {
+          "despesasDate": {
             "type": "string",
             "format": "date",
             "description": "Data da despesa"
           },
-          "patientId": {
+          "pacienteId": {
             "type": "string",
             "description": "Nome paciente"
           },
-          "patientEmail": {
+          "pacienteEmail": {
             "type": "string",
             "description": "Email paciente"
           },
-          "professionalId": {
+          "profissionalId": {
             "type": "string",
             "description": "nome profissional"
           }
@@ -185,18 +186,20 @@
           "description": "Compra de materiais de escritório",
           "amount": 150.75,
           "category": "Material de Escritório",
-          "expenseDate": "2024-06-15",
-          "patientId": "João da Silva",
-          "patientEmail": "joao.silva@gmail.com",
-          "professionalId": "Dr. José"
+          "despesasDate": "2024-06-15",
+          "pacienteId": "João da Silva",
+          "pacienteEmail": "joao.silva@gmail.com",
+          "profissionalId": "Dr. José"
         }
       },
-      "Patient": {
+      "Paciente": {
         "type": "object",
         "required": [
           "name",
           "email",
-          "phone"
+          "phone",
+          "birthDate",
+          "address"
         ],
         "properties": {
           "id": {
@@ -215,29 +218,39 @@
           "phone": {
             "type": "string",
             "description": "Telefone do paciente"
+          },
+          "birthDate": {
+            "type": "date",
+            "description": "Data de Nascimento"
+          },
+          "address": {
+            "type": "string",
+            "description": "Endereco"
           }
         },
         "example": {
           "id": 1,
           "name": "João Silva",
           "email": "joao@email.com",
-          "phone": "11999999999"
+          "phone": "11999999999",
+          "birthDate": "1990-01-01",
+          "address": "Rua Exemplo, 123, São Paulo, SP"
         }
       },
-      "Payment": {
+      "Pagamento": {
         "type": "object",
         "required": [
-          "patientId",
+          "pacienteId",
           "amount",
-          "paymentType",
-          "paymentDate"
+          "pagamentoType",
+          "pagamentoDate"
         ],
         "properties": {
           "id": {
             "type": "integer",
             "description": "ID único do pagamento"
           },
-          "patientId": {
+          "pacienteId": {
             "type": "integer",
             "description": "ID do paciente associado"
           },
@@ -246,7 +259,7 @@
             "format": "float",
             "description": "Valor do pagamento"
           },
-          "paymentType": {
+          "pagamentoType": {
             "type": "string",
             "enum": [
               "Particular",
@@ -255,7 +268,7 @@
             ],
             "description": "Tipo de pagamento"
           },
-          "paymentDate": {
+          "pagamentoDate": {
             "type": "string",
             "format": "date",
             "description": "Data do pagamento"
@@ -263,10 +276,53 @@
         },
         "example": {
           "id": 1,
-          "patientId": 3,
+          "pacienteId": 3,
           "amount": 250.5,
-          "paymentType": "Particular",
-          "paymentDate": "2024-06-15"
+          "pagamentoType": "Particular",
+          "pagamentoDate": "2024-06-15"
+        }
+      },
+      "Profissionais": {
+        "type": "object",
+        "required": [
+          "nome",
+          "email",
+          "dataNascimento",
+          "sexo"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "ID único dao profissional"
+          },
+          "nome": {
+            "type": "strimg",
+            "description": "Nome do profissional"
+          },
+          "dataNascimento": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Data de nascimento do profissional"
+          },
+          "email": {
+            "type": "string",
+            "format": "string",
+            "description": "email do profissional"
+          },
+          "sexo": {
+            "type": "string",
+            "description": "sexo do profissional",
+            "enum": [
+              "Masculino",
+              "Feminino"
+            ]
+          }
+        },
+        "example": {
+          "nome": "João Silva",
+          "email": "joao@email.com",
+          "dataNascimento": "2000-01-01T14:30:00.000Z",
+          "sexo": "Masculino"
         }
       },
       "ReportResponse": {
@@ -298,7 +354,7 @@
           "url": "http://localhost:5000/uploads/exame123.pdf"
         }
       },
-      "User": {
+      "Usuario": {
         "type": "object",
         "required": [
           "name",
@@ -328,11 +384,11 @@
     }
   },
   "paths": {
-    "/api/appointments": {
+    "/api/agendamentos": {
       "get": {
-        "summary": "Lista todas as consultas agendadas",
+        "summary": "Lista todos as agendamentos registrados",
         "tags": [
-          "Consultas"
+          "Agendamentos"
         ],
         "security": [
           {
@@ -341,13 +397,13 @@
         ],
         "responses": {
           "200": {
-            "description": "Lista de consultas retornada com sucesso",
+            "description": "Lista de agendamentos retornada com sucesso",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Appointment"
+                    "$ref": "#/components/schemas/Agendamentos"
                   }
                 }
               }
@@ -359,9 +415,9 @@
         }
       },
       "post": {
-        "summary": "Agenda uma nova consulta",
+        "summary": "Realiza um novo agendamento",
         "tags": [
-          "Consultas"
+          "Agendamentos"
         ],
         "security": [
           {
@@ -373,18 +429,18 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Appointment"
+                "$ref": "#/components/schemas/Agendamentos"
               }
             }
           }
         },
         "responses": {
           "201": {
-            "description": "Consulta agendada com sucesso",
+            "description": "Agendamentos agendada com sucesso",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Appointment"
+                  "$ref": "#/components/schemas/Agendamentos"
                 }
               }
             }
@@ -398,11 +454,11 @@
         }
       }
     },
-    "/api/appointments/{id}": {
+    "/api/agendamentos/{id}": {
       "get": {
-        "summary": "Obtém uma consulta pelo ID",
+        "summary": "Obtém um agendamento pelo ID",
         "tags": [
-          "Consultas"
+          "Agendamentos"
         ],
         "security": [
           {
@@ -417,16 +473,16 @@
             "schema": {
               "type": "integer"
             },
-            "description": "ID da consulta a ser recuperada"
+            "description": "ID da agendamentos a ser recuperada"
           }
         ],
         "responses": {
           "200": {
-            "description": "Consulta encontrada com sucesso",
+            "description": "Agendamentos encontrada com sucesso",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Appointment"
+                  "$ref": "#/components/schemas/Agendamentos"
                 }
               }
             }
@@ -435,14 +491,14 @@
             "description": "Token inválido ou ausente"
           },
           "404": {
-            "description": "Consulta não encontrada"
+            "description": "Agendamentos não encontrada"
           }
         }
       },
       "put": {
-        "summary": "Atualiza os dados de uma consulta existente",
+        "summary": "Atualiza os dados de um agendamento existente",
         "tags": [
-          "Consultas"
+          "Agendamentos"
         ],
         "security": [
           {
@@ -457,7 +513,7 @@
             "schema": {
               "type": "integer"
             },
-            "description": "ID da consulta a ser atualizada"
+            "description": "ID da agendamentos a ser atualizada"
           }
         ],
         "requestBody": {
@@ -490,7 +546,7 @@
         },
         "responses": {
           "200": {
-            "description": "Consulta atualizada com sucesso"
+            "description": "Agendamento atualizado com sucesso"
           },
           "400": {
             "description": "Dados inválidos"
@@ -499,14 +555,14 @@
             "description": "Token inválido ou ausente"
           },
           "404": {
-            "description": "Consulta não encontrada"
+            "description": "Agendamento não encontrado"
           }
         }
       },
       "delete": {
-        "summary": "Cancela uma consulta",
+        "summary": "Cancela um agendamento",
         "tags": [
-          "Consultas"
+          "Agendamentos"
         ],
         "security": [
           {
@@ -521,18 +577,18 @@
             "schema": {
               "type": "integer"
             },
-            "description": "ID da consulta a ser cancelada"
+            "description": "ID do agendamento a ser cancelado"
           }
         ],
         "responses": {
           "200": {
-            "description": "Consulta cancelada com sucesso"
+            "description": "Agendamento cancelado com sucesso"
           },
           "401": {
             "description": "Token inválido ou ausente"
           },
           "404": {
-            "description": "Consulta não encontrada"
+            "description": "Agendamento não encontrado"
           }
         }
       }
@@ -679,7 +735,7 @@
         }
       }
     },
-    "/api/expenses": {
+    "/api/despesass": {
       "post": {
         "summary": "Cadastra uma nova despesa",
         "tags": [
@@ -695,7 +751,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Expense"
+                "$ref": "#/components/schemas/Despesas"
               }
             }
           }
@@ -706,7 +762,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Expense"
+                  "$ref": "#/components/schemas/Despesas"
                 }
               }
             }
@@ -716,6 +772,187 @@
           },
           "401": {
             "description": "Token inválido ou ausente"
+          }
+        }
+      }
+    },
+    "/api/enderecos": {
+      "get": {
+        "summary": "Lista todos os endereços cadastrados",
+        "tags": [
+          "Endereços"
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de endereços retornada com sucesso"
+          }
+        }
+      },
+      "post": {
+        "summary": "Cria um novo endereço",
+        "tags": [
+          "Endereços"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "rua": {
+                    "type": "string"
+                  },
+                  "numero": {
+                    "type": "string"
+                  },
+                  "bairro": {
+                    "type": "string"
+                  },
+                  "cidade": {
+                    "type": "string"
+                  },
+                  "estado": {
+                    "type": "string"
+                  },
+                  "cep": {
+                    "type": "string"
+                  },
+                  "contato_id": {
+                    "type": "integer"
+                  },
+                  "contato_tipo": {
+                    "type": "string",
+                    "enum": [
+                      "paciente",
+                      "profissional"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Endereço criado com sucesso"
+          }
+        }
+      }
+    },
+    "/api/enderecos/{id}": {
+      "get": {
+        "summary": "Busca um endereço pelo ID",
+        "tags": [
+          "Endereços"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "ID do endereço"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Endereço encontrado"
+          },
+          "404": {
+            "description": "Endereço não encontrado"
+          }
+        }
+      },
+      "put": {
+        "summary": "Atualiza os dados de um endereço",
+        "tags": [
+          "Endereços"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "ID do endereço"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "rua": {
+                    "type": "string"
+                  },
+                  "numero": {
+                    "type": "string"
+                  },
+                  "bairro": {
+                    "type": "string"
+                  },
+                  "cidade": {
+                    "type": "string"
+                  },
+                  "estado": {
+                    "type": "string"
+                  },
+                  "cep": {
+                    "type": "string"
+                  },
+                  "contato_id": {
+                    "type": "integer"
+                  },
+                  "contato_tipo": {
+                    "type": "string",
+                    "enum": [
+                      "paciente",
+                      "profissional"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Endereço atualizado com sucesso"
+          },
+          "404": {
+            "description": "Endereço não encontrado"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Exclui um endereço",
+        "tags": [
+          "Endereços"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "ID do endereço"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Endereço excluído com sucesso"
+          },
+          "404": {
+            "description": "Endereço não encontrado"
           }
         }
       }
@@ -761,9 +998,9 @@
         }
       }
     },
-    "/api/notifications/consulta": {
+    "/api/notifications/agendamentos": {
       "post": {
-        "summary": "Envia um e-mail de notificação para uma consulta agendada",
+        "summary": "Envia um e-mail de notificação para uma agendamentos agendada",
         "tags": [
           "Notificações"
         ],
@@ -779,9 +1016,9 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "appointmentId": {
+                  "agendamentosId": {
                     "type": "integer",
-                    "description": "ID da consulta a ser notificada"
+                    "description": "ID da agendamentos a ser notificada"
                   }
                 }
               }
@@ -799,7 +1036,7 @@
             "description": "Token inválido ou ausente"
           },
           "404": {
-            "description": "Consulta não encontrada"
+            "description": "Agendamentos não encontrada"
           }
         }
       }
@@ -822,7 +1059,7 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "paymentId": {
+                  "pagamentoId": {
                     "type": "integer",
                     "description": "ID do pagamento a ser notificado"
                   }
@@ -847,7 +1084,7 @@
         }
       }
     },
-    "/api/patients": {
+    "/api/pacientes": {
       "get": {
         "summary": "Lista todos os pacientes cadastrados",
         "tags": [
@@ -866,7 +1103,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Patient"
+                    "$ref": "#/components/schemas/Paciente"
                   }
                 }
               }
@@ -892,7 +1129,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Patient"
+                "$ref": "#/components/schemas/Paciente"
               }
             }
           }
@@ -910,7 +1147,7 @@
         }
       }
     },
-    "/api/patients/{id}": {
+    "/api/pacientes/{id}": {
       "get": {
         "summary": "Obtém um paciente pelo ID",
         "tags": [
@@ -938,7 +1175,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Patient"
+                  "$ref": "#/components/schemas/Paciente"
                 }
               }
             }
@@ -1042,7 +1279,7 @@
         }
       }
     },
-    "/api/payments": {
+    "/api/pagamentos": {
       "get": {
         "summary": "Lista todos os pagamentos registrados",
         "tags": [
@@ -1061,7 +1298,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Payment"
+                    "$ref": "#/components/schemas/Pagamento"
                   }
                 }
               }
@@ -1087,7 +1324,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Payment"
+                "$ref": "#/components/schemas/Pagamento"
               }
             }
           }
@@ -1098,7 +1335,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Payment"
+                  "$ref": "#/components/schemas/Pagamento"
                 }
               }
             }
@@ -1112,7 +1349,7 @@
         }
       }
     },
-    "/api/payments/{id}": {
+    "/api/pagamentos/{id}": {
       "get": {
         "summary": "Obtém um pagamento pelo ID",
         "tags": [
@@ -1140,7 +1377,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Payment"
+                  "$ref": "#/components/schemas/Pagamento"
                 }
               }
             }
@@ -1185,7 +1422,7 @@
                     "type": "number",
                     "format": "float"
                   },
-                  "paymentType": {
+                  "pagamentoType": {
                     "type": "string",
                     "enum": [
                       "Particular",
@@ -1193,7 +1430,7 @@
                       "Comissão"
                     ]
                   },
-                  "paymentDate": {
+                  "pagamentoDate": {
                     "type": "string",
                     "format": "date"
                   }
@@ -1251,6 +1488,205 @@
         }
       }
     },
+    "/api/profissionais": {
+      "get": {
+        "summary": "Lista todos os profissionais cadastrados",
+        "tags": [
+          "Profissionais"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de profissionais retornada com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Profissionais"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token inválido ou ausente"
+          }
+        }
+      },
+      "post": {
+        "summary": "Cria um novo profissional",
+        "tags": [
+          "Profissionais"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Profissionais"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Profissional criado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Profissionais"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Dados inválidos"
+          },
+          "401": {
+            "description": "Token inválido ou ausente"
+          }
+        }
+      }
+    },
+    "/api/profissionais/{id}": {
+      "get": {
+        "summary": "Busca um profissional pelo ID",
+        "tags": [
+          "Profissionais"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "ID do profissional"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Profissional encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Profissionais"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token inválido ou ausente"
+          },
+          "404": {
+            "description": "Profissional não encontrado"
+          }
+        }
+      },
+      "put": {
+        "summary": "Atualiza os dados de um profissional",
+        "tags": [
+          "Profissionais"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "ID do profissional"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "nome": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string"
+                  },
+                  "dataNascimento": {
+                    "type": "string",
+                    "format": "date"
+                  },
+                  "sexo": {
+                    "type": "string",
+                    "enum": [
+                      "Masculino",
+                      "Feminino"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Profissional atualizado com sucesso"
+          },
+          "404": {
+            "description": "Profissional não encontrado"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Exclui um profissional",
+        "tags": [
+          "Profissionais"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "ID do Profissional a ser cancelado"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Profissional excluído com sucesso"
+          },
+          "401": {
+            "description": "Token inválido ou ausente"
+          },
+          "404": {
+            "description": "Profissional não encontrado"
+          }
+        }
+      }
+    },
     "/api/reports/financeiro": {
       "get": {
         "summary": "Gera um relatório financeiro detalhado",
@@ -1301,9 +1737,9 @@
         }
       }
     },
-    "/api/reports/consultas": {
+    "/api/reports/agendamentos": {
       "get": {
-        "summary": "Gera um relatório de consultas agendadas",
+        "summary": "Gera um relatório de agendamento realizados",
         "tags": [
           "Relatórios"
         ],
@@ -1336,7 +1772,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Relatório de consultas gerado com sucesso",
+            "description": "Relatório de agendamentos gerado com sucesso",
             "content": {
               "application/json": {
                 "schema": {
@@ -1351,7 +1787,174 @@
         }
       }
     },
-    "/api/uploads/{patientId}": {
+    "/api/telefones": {
+      "get": {
+        "summary": "Lista todos os telefones cadastrados",
+        "tags": [
+          "Telefones"
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de telefones retornada com sucesso"
+          }
+        }
+      },
+      "post": {
+        "summary": "Cria um novo telefone",
+        "tags": [
+          "Telefones"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "numero": {
+                    "type": "integer"
+                  },
+                  "tipo": {
+                    "type": "string",
+                    "enum": [
+                      "celular",
+                      "residencial",
+                      "comercial"
+                    ]
+                  },
+                  "contato_id": {
+                    "type": "integer"
+                  },
+                  "contato_tipo": {
+                    "type": "string",
+                    "enum": [
+                      "paciente",
+                      "profissional"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Telefone criado com sucesso"
+          }
+        }
+      }
+    },
+    "/api/telefones/{id}": {
+      "get": {
+        "summary": "Busca um telefone pelo ID",
+        "tags": [
+          "Telefones"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "ID do telefone"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Telefone encontrado"
+          },
+          "404": {
+            "description": "Telefone não encontrado"
+          }
+        }
+      },
+      "put": {
+        "summary": "Atualiza os dados de um telefone",
+        "tags": [
+          "Telefones"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "ID do telefone"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "numero": {
+                    "type": "integer"
+                  },
+                  "tipo": {
+                    "type": "string",
+                    "enum": [
+                      "celular",
+                      "residencial",
+                      "comercial"
+                    ]
+                  },
+                  "contato_id": {
+                    "type": "integer"
+                  },
+                  "contato_tipo": {
+                    "type": "string",
+                    "enum": [
+                      "paciente",
+                      "profissional"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Telefone atualizado com sucesso"
+          },
+          "404": {
+            "description": "Telefone não encontrado"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Exclui um telefone",
+        "tags": [
+          "Telefones"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "ID do telefone"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Telefone excluído com sucesso"
+          },
+          "404": {
+            "description": "Telefone não encontrado"
+          }
+        }
+      }
+    },
+    "/api/uploads/{pacienteId}": {
       "post": {
         "summary": "Faz o upload de um arquivo para um paciente específico",
         "tags": [
@@ -1365,7 +1968,7 @@
         "parameters": [
           {
             "in": "path",
-            "name": "patientId",
+            "name": "pacienteId",
             "required": true,
             "schema": {
               "type": "integer"
@@ -1421,7 +2024,7 @@
         "parameters": [
           {
             "in": "path",
-            "name": "patientId",
+            "name": "pacienteId",
             "required": true,
             "schema": {
               "type": "integer"
@@ -1484,7 +2087,7 @@
         }
       }
     },
-    "/api/users": {
+    "/api/usuarios": {
       "get": {
         "summary": "Lista todos os usuários cadastrados",
         "tags": [
@@ -1503,7 +2106,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/User"
+                    "$ref": "#/components/schemas/Usuario"
                   }
                 }
               }
@@ -1515,7 +2118,7 @@
         }
       }
     },
-    "/api/users/{id}": {
+    "/api/usuarios/{id}": {
       "put": {
         "summary": "Atualiza os dados de um usuário existente",
         "tags": [
@@ -1574,8 +2177,8 @@
   },
   "tags": [
     {
-      "name": "Consultas",
-      "description": "Gerenciamento de consultas médicas"
+      "name": "Agendamentos",
+      "description": "Gerenciamento de agendamentos"
     },
     {
       "name": "Autenticação",
@@ -1586,12 +2189,16 @@
       "description": "Gerenciamento de despesas do sistema"
     },
     {
+      "name": "Endereços",
+      "description": "Gerenciamento de endereços do sistema"
+    },
+    {
       "name": "Google Calendar",
       "description": "Gerenciamento de eventos do Google Calendar"
     },
     {
       "name": "Notificações",
-      "description": "Envio de notificações por e-mail sobre consultas e pagamentos"
+      "description": "Envio de notificações por e-mail sobre agendamentos e pagamentos"
     },
     {
       "name": "Pacientes",
@@ -1602,8 +2209,16 @@
       "description": "Gerenciamento de pagamentos e recebimentos"
     },
     {
+      "name": "Profissionais",
+      "description": "Gerenciamento de profissionais do sistema"
+    },
+    {
       "name": "Relatórios",
-      "description": "Geração de relatórios financeiros e de consultas"
+      "description": "Geração de relatórios financeiros e de agendamentos"
+    },
+    {
+      "name": "Telefones",
+      "description": "Gerenciamento de telefones do sistema"
     },
     {
       "name": "Uploads",

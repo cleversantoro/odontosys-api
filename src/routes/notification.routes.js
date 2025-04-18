@@ -1,6 +1,6 @@
 const express = require("express");
 const { authenticateToken } = require("../middlewares/auth.middleware");
-const { sendAppointmentNotification, sendPaymentNotification } = require("../controllers/notification.controller");
+const { sendAgendamentosNotification, sendPagamentoNotification } = require("../controllers/notification.controller");
 
 const router = express.Router();
 
@@ -8,14 +8,14 @@ const router = express.Router();
  * @swagger
  * tags:
  *   name: Notificações
- *   description: Envio de notificações por e-mail sobre consultas e pagamentos
+ *   description: Envio de notificações por e-mail sobre agendamentos e pagamentos
  */
 
 /**
  * @swagger
- * /api/notifications/consulta:
+ * /api/notifications/agendamentos:
  *   post:
- *     summary: Envia um e-mail de notificação para uma consulta agendada
+ *     summary: Envia um e-mail de notificação para uma agendamentos agendada
  *     tags: [Notificações]
  *     security:
  *       - BearerAuth: []
@@ -26,20 +26,20 @@ const router = express.Router();
  *           schema:
  *             type: object
  *             properties:
- *               appointmentId:
+ *               agendamentosId:
  *                 type: integer
- *                 description: ID da consulta a ser notificada
+ *                 description: ID da agendamentos a ser notificada
  *     responses:
  *       200:
  *         description: Notificação enviada com sucesso
  *       400:
  *         description: Dados inválidos
  *       404:
- *         description: Consulta não encontrada
+ *         description: Agendamentos não encontrada
  *       401:
  *         description: Token inválido ou ausente
  */
-router.post("/consulta", authenticateToken, sendAppointmentNotification);
+router.post("/agendamentos", authenticateToken, sendAgendamentosNotification);
 
 /**
  * @swagger
@@ -56,7 +56,7 @@ router.post("/consulta", authenticateToken, sendAppointmentNotification);
  *           schema:
  *             type: object
  *             properties:
- *               paymentId:
+ *               pagamentoId:
  *                 type: integer
  *                 description: ID do pagamento a ser notificado
  *     responses:
@@ -69,6 +69,6 @@ router.post("/consulta", authenticateToken, sendAppointmentNotification);
  *       401:
  *         description: Token inválido ou ausente
  */
-router.post("/pagamento", authenticateToken, sendPaymentNotification);
+router.post("/pagamento", authenticateToken, sendPagamentoNotification);
 
 module.exports = router;
