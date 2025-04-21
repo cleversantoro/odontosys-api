@@ -11,6 +11,6 @@ const Despesa = sequelize.define("Despesas", {
   registeredBy: { type: DataTypes.INTEGER, allowNull: false } 
 });
 
-Despesa.belongsTo(Usuario, { foreignKey: "registeredBy", as: "registeredByUsuario" });
+Despesa.belongsTo(Usuario, { foreignKey: "registeredBy", as: "usuario" });
 
 module.exports = Despesa;

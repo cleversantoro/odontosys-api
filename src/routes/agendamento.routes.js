@@ -47,7 +47,7 @@ const router = express.Router();
  *       example:
  *         pacienteId: 1
  *         profissionalId: 1
- *         data: "2024-06-15T14:30:00.000Z"
+ *         data: "2024-06-15"
  *         status: "Agendado"
  *         obs: "Paciente precisa trazer exames anteriores."
  */
@@ -84,7 +84,7 @@ router.get("/", authenticateToken, getAgendamentos);
  *       - BearerAuth: []
  *     parameters:
  *       - in: path
- *         name: id
+ *         nome: id
  *         required: true
  *         schema:
  *           type: integer
@@ -141,7 +141,7 @@ router.post("/", authenticateToken, createAgendamentos);
  *       - BearerAuth: []
  *     parameters:
  *       - in: path
- *         name: id
+ *         nome: id
  *         required: true
  *         schema:
  *           type: integer
@@ -183,7 +183,7 @@ router.put("/:id", authenticateToken, updateAgendamentos);
  *       - BearerAuth: []
  *     parameters:
  *       - in: path
- *         name: id
+ *         nome: id
  *         required: true
  *         schema:
  *           type: integer

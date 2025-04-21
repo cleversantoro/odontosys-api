@@ -18,6 +18,6 @@ const Endereco = sequelize.define("Enderecos", {
 });
 
 // Relacionamento: Um usuário pode registrar vários pacientes
-Endereco.belongsTo(Usuario, { foreignKey: "registeredBy", as: "registeredByUsuario" });
+Endereco.belongsTo(Usuario, { foreignKey: "registeredBy", as: "usuario" });
 
 module.exports = Endereco;

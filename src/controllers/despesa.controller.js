@@ -12,3 +12,14 @@ exports.createDespesas = async (req, res) => {
     res.status(500).json({ error: "Erro ao registrar despesa" });
   }
 };
+
+
+exports.getDespesas = async (req, res) => {
+  try {
+    const despesas = await Despesas.findAll();
+    res.status(201).json(despesas);
+  } catch (error) {
+    res.status(500).json({ error: "Erro ao buscar despesas" });
+  }
+};
+

@@ -2,23 +2,15 @@ const Endereco = require("../models/endereco.model");
 
 exports.createEndereco = async (req, res) => {
   try {
-    const { rua, numero, bairro, cidade, estado, cep, contato_id, contato_tipo } = req.body;
+    const { logradouro, numero, complemento, bairro, cidade, estado, cep, contato_id, contato_tipo } = req.body;
     const registeredBy = req.usuario.id; // Usuário autenticado
 
-    if (!rua || !numero || !bairro || !cidade || !estado || !cep || !contato_id || !contato_tipo) {
+    if (!logradouro || !numero || !bairro || !cidade || !estado || !cep || !contato_id || !contato_tipo) {
       return res.status(400).json({ error: "Todos os campos são obrigatórios" });
     }
 
     const newEndereco = await Endereco.create({
-      rua,
-      numero,
-      bairro,
-      cidade,
-      estado,
-      cep,
-      contato_id,
-      contato_tipo,
-      registeredBy,
+      logradouro, numero, complemento, bairro, cidade, estado, cep, contato_id, contato_tipo, registeredBy,
     });
 
     res.status(201).json(newEndereco);
@@ -54,14 +46,14 @@ exports.getEnderecoById = async (req, res) => {
 
 exports.updateEndereco = async (req, res) => {
   try {
-    const { rua, numero, bairro, cidade, estado, cep, contato_id, contato_tipo } = req.body;
+    const { logradouro, numero, complemento, bairro, cidade, estado, cep, contato_id, contato_tipo } = req.body;
     const endereco = await Endereco.findByPk(req.params.id);
 
     if (!endereco) {
       return res.status(404).json({ error: "Endereço não encontrado" });
     }
 
-    await endereco.update({ rua, numero, bairro, cidade, estado, cep, contato_id, contato_tipo });
+    await endereco.update({ logradouro, numero, complemento, bairro, cidade, estado, cep, contato_id, contato_tipo });
     res.status(200).json({ message: "Endereço atualizado com sucesso!" });
   } catch (error) {
     console.error("Erro ao atualizar endereço:", error);

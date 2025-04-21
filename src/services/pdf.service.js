@@ -22,9 +22,9 @@ exports.generatePDF = (data) => {
       doc.moveDown();
     }
 
-    if (data.despesass) {
+    if (data.despesas) {
       doc.fontSize(14).text("Despesas:", { underline: true });
-      data.despesass.forEach((e) => {
+      data.despesas.forEach((e) => {
         doc.fontSize(12).text(`Descrição: ${e.description}, Valor: R$${e.amount}, Categoria: ${e.category}`);
       });
       doc.moveDown();

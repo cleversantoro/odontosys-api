@@ -44,9 +44,13 @@ exports.login = async (req, res) => {
 exports.refreshToken = async (req, res) => {
   try {
     const { token } = req.body;
+    console.log(token);
+
     if (!token) return res.status(401).json({ error: "Token necessário" });
 
     const storedToken = await Token.findOne({ where: { token } });
+    console.log(storedToken);
+    
     if (!storedToken) return res.status(403).json({ error: "Refresh Token inválido" });
 
     const decoded = jwt.verify(token, process.env.JWT_REFRESH_SECRET);
@@ -66,8 +70,8 @@ exports.refreshToken = async (req, res) => {
 
 exports.logout = async (req, res) => {
   try {
-    const { token } = req.body;
-    await Token.destroy({ where: { token } });
+    const { accessToken } = req.body;
+    await Token.destroy({ where: { accessToken } });
     res.json({ message: "Logout realizado com sucesso!" });
   } catch (error) {
     res.status(500).json({ error: "Erro ao fazer logout" });

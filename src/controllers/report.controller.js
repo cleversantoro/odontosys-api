@@ -6,12 +6,12 @@ const { generatePDF } = require("../services/pdf.service");
 exports.generateFinancialReport = async (req, res) => {
   try {
     const pagamentos = await Pagamento.findAll();
-    const despesass = await Despesas.findAll();
+    const despesas = await Despesas.findAll();
 
     const data = {
       title: "Relatório Financeiro",
       pagamentos,
-      despesass,
+      despesas,
     };
 
     const pdfBuffer = await generatePDF(data);

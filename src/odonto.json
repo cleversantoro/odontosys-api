@@ -65,7 +65,7 @@
         "example": {
           "pacienteId": 1,
           "profissionalId": 1,
-          "data": "2024-06-15T14:30:00.000Z",
+          "data": "2024-06-15",
           "status": "Agendado",
           "obs": "Paciente precisa trazer exames anteriores."
         }
@@ -150,20 +150,20 @@
             "type": "integer",
             "description": "ID único da despesa"
           },
-          "description": {
+          "descricao": {
             "type": "string",
             "description": "Descrição da despesa"
           },
-          "amount": {
+          "valor": {
             "type": "number",
             "format": "float",
             "description": "Valor da despesa"
           },
-          "category": {
+          "categoria": {
             "type": "string",
             "description": "Categoria da despesa"
           },
-          "despesasDate": {
+          "data": {
             "type": "string",
             "format": "date",
             "description": "Data da despesa"
@@ -183,10 +183,10 @@
         },
         "example": {
           "id": 1,
-          "description": "Compra de materiais de escritório",
-          "amount": 150.75,
-          "category": "Material de Escritório",
-          "despesasDate": "2024-06-15",
+          "descricao": "Compra de materiais de escritório",
+          "valor": 150.75,
+          "categoria": "Material de Escritório",
+          "data": "2024-06-15",
           "pacienteId": "João da Silva",
           "pacienteEmail": "joao.silva@gmail.com",
           "profissionalId": "Dr. José"
@@ -195,11 +195,9 @@
       "Paciente": {
         "type": "object",
         "required": [
-          "name",
-          "email",
-          "phone",
-          "birthDate",
-          "address"
+          "nome",
+          "sexo",
+          "dataNascimento"
         ],
         "properties": {
           "id": {
@@ -468,7 +466,7 @@
         "parameters": [
           {
             "in": "path",
-            "name": "id",
+            "nome": "id",
             "required": true,
             "schema": {
               "type": "integer"
@@ -508,7 +506,7 @@
         "parameters": [
           {
             "in": "path",
-            "name": "id",
+            "nome": "id",
             "required": true,
             "schema": {
               "type": "integer"
@@ -572,7 +570,7 @@
         "parameters": [
           {
             "in": "path",
-            "name": "id",
+            "nome": "id",
             "required": true,
             "schema": {
               "type": "integer"
@@ -735,7 +733,35 @@
         }
       }
     },
-    "/api/despesass": {
+    "/api/consultas": {
+      "get": {
+        "summary": "Lista todos as agendamentos registrados",
+        "tags": [
+          "Consultas"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de consultas retornada com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token inválido ou ausente"
+          }
+        }
+      }
+    },
+    "/api/despesas": {
       "post": {
         "summary": "Cadastra uma nova despesa",
         "tags": [
@@ -774,6 +800,35 @@
             "description": "Token inválido ou ausente"
           }
         }
+      },
+      "get": {
+        "summary": "Lista todos as Despesas cadastradas",
+        "tags": [
+          "Despesas"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de Despesas retornada com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Despesas"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token inválido ou ausente"
+          }
+        }
       }
     },
     "/api/enderecos": {
@@ -804,6 +859,9 @@
                     "type": "string"
                   },
                   "numero": {
+                    "type": "string"
+                  },
+                  "complemento": {
                     "type": "string"
                   },
                   "bairro": {
@@ -889,10 +947,13 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "rua": {
+                  "logradouro": {
                     "type": "string"
                   },
                   "numero": {
+                    "type": "string"
+                  },
+                  "complemento": {
                     "type": "string"
                   },
                   "bairro": {
@@ -2183,6 +2244,10 @@
     {
       "name": "Autenticação",
       "description": "Gerenciamento de usuários e autenticação"
+    },
+    {
+      "name": "Consultas",
+      "description": "Busca as consultas do sistema"
     },
     {
       "name": "Despesas",

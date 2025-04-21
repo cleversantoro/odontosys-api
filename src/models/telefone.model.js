@@ -12,6 +12,6 @@ const Telefone = sequelize.define("Telefones", {
 });
 
 // Relacionamento: Um usuário pode registrar vários pacientes
-Telefone.belongsTo(Usuario, { foreignKey: "registeredBy", as: "registeredByUsuario" });
+Telefone.belongsTo(Usuario, { foreignKey: "registeredBy", as: "usuario" });
 
 module.exports = Telefone;

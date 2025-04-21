@@ -12,6 +12,6 @@ const Profissional = sequelize.define("Profissionais", {
 });
 
 // Relacionamento: Um usuário pode registrar vários pacientes
-Profissional.belongsTo(Usuario, { foreignKey: "registeredBy", as: "registeredByUsuario" });
+Profissional.belongsTo(Usuario, { foreignKey: "registeredBy", as: "usuario" });
 
 module.exports = Profissional;

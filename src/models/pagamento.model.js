@@ -24,6 +24,6 @@ const Pagamento = sequelize.define("Pagamentos", {
 // Relacionamentos
 Pagamento.belongsTo(Paciente, { foreignKey: "pacienteId", as: "paciente" });
 Pagamento.belongsTo(Profissional, { foreignKey: "profissionalId", as: "profissional" });
-Pagamento.belongsTo(Usuario, { foreignKey: "registeredBy", as: "registeredByUsuario" });
+Pagamento.belongsTo(Usuario, { foreignKey: "registeredBy", as: "usuario" });
 
 module.exports = Pagamento;

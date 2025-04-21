@@ -4,7 +4,7 @@ const io = require("../config/socket"); // WebSockets para notificações em tem
 
 exports.getAgendamentos = async (req, res) => {
   try {
-    const agendamentos = await Agendamentos.findAll({ include: ["paciente", "profissional"] });
+    const agendamentos = await Agendamentos.findAll({ include: ["paciente", "profissional", "usuario"] });
     res.json(agendamentos);
   } catch (error) {
     res.status(500).json({ error: "Erro ao buscar agendamentos" });
@@ -13,7 +13,7 @@ exports.getAgendamentos = async (req, res) => {
 
 exports.getAgendamentosPorId = async (req, res) => {
   try {
-    const agendamentos = await Agendamentos.findByPk(req.params.id, { include: ["paciente", "profissional"] });
+    const agendamentos = await Agendamentos.findByPk(req.params.id, { include: ["paciente", "profissional", "usuario"] });
 
     if (!agendamentos) return res.status(404).json({ error: "Agendamentos não encontrada" });
 

@@ -18,11 +18,9 @@ const router = express.Router();
  *     Paciente:
  *       type: object
  *       required:
- *         - name
- *         - email
- *         - phone
- *         - birthDate
- *         - address
+ *         - nome
+ *         - sexo
+ *         - dataNascimento
  *       properties:
  *         id:
  *           type: integer

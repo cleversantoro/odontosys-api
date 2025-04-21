@@ -66,6 +66,8 @@ router.get("/:id", getEnderecoById);
  *                 type: string
  *               numero:
  *                 type: string
+ *               complemento:
+ *                 type: string
  *               bairro:
  *                 type: string
  *               cidade:
@@ -105,9 +107,11 @@ router.post("/", createEndereco);
  *           schema:
  *             type: object
  *             properties:
- *               rua:
+ *               logradouro:
  *                 type: string
  *               numero:
+ *                 type: string
+ *               complemento:
  *                 type: string
  *               bairro:
  *                 type: string

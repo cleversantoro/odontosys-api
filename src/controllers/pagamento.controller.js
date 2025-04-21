@@ -4,9 +4,9 @@ const io = require("../config/socket");
 
 exports.createPagamento = async (req, res) => {
   try {
-    const { pacienteId, profissionalId, amount, pagamentoType, pagamentoDate } = req.body;
+    const { pacienteId, profissionalId, valor, tipoPgamento, status, data } = req.body;
 
-    const newPagamento = await Pagamento.create({ pacienteId, profissionalId, amount, pagamentoType, pagamentoDate });
+    const newPagamento = await Pagamento.create({ pacienteId, profissionalId, valor, tipoPgamento, status, data, registeredBy: req.userId });
 
     io.emit("pagamentoReceived", newPagamento); // Notifica pagamentos em tempo real
 
@@ -16,10 +16,9 @@ exports.createPagamento = async (req, res) => {
   }
 };
 
-
 exports.getPagamentos = async (req, res) => {
   try {
-    const pagamentos = await Pagamento.findAll({ include: ["paciente", "profissional"] });
+    const pagamentos = await Pagamento.findAll({ include: ["paciente", "profissional", "usuario"] });
     res.json(pagamentos);
   } catch (error) {
     res.status(500).json({ error: "Erro ao buscar pagamentos" });
@@ -28,7 +27,7 @@ exports.getPagamentos = async (req, res) => {
 
 exports.getPagamentoById = async (req, res) => {
   try {
-    const pagamento = await Pagamento.findByPk(req.params.id, { include: ["paciente", "profissional"] });
+    const pagamento = await Pagamento.findByPk(req.params.id, { include: ["paciente", "profissional", "usuario"] });
 
     if (!pagamento) return res.status(404).json({ error: "Pagamento não encontrado" });
 
@@ -40,12 +39,12 @@ exports.getPagamentoById = async (req, res) => {
 
 exports.updatePagamento = async (req, res) => {
   try {
-    const { amount, status, pagamentoDate } = req.body;
+    const { valor, tipoPgamento , status, dataPagamento } = req.body;
     const pagamento = await Pagamento.findByPk(req.params.id);
 
     if (!pagamento) return res.status(404).json({ error: "Pagamento não encontrado" });
 
-    await pagamento.update({ amount, status, pagamentoDate });
+    await pagamento.update({ valor, tipoPgamento , status, dataPagamento });
 
     res.json({ message: "Pagamento atualizado com sucesso!" });
   } catch (error) {

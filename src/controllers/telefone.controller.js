@@ -9,13 +9,7 @@ exports.createTelefone = async (req, res) => {
       return res.status(400).json({ error: "Todos os campos são obrigatórios" });
     }
 
-    const newTelefone = await Telefone.create({
-      numero,
-      tipo,
-      contato_id,
-      contato_tipo,
-      registeredBy,
-    });
+    const newTelefone = await Telefone.create({ numero, tipo, contato_id, contato_tipo, registeredBy, });
 
     res.status(201).json(newTelefone);
   } catch (error) {

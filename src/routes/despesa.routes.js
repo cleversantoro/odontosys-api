@@ -18,39 +18,39 @@ const router = express.Router();
  *     Despesas:
  *       type: object
  *       required:
- *         - description
- *         - amount
- *         - category
- *         - despesasDate
+ *         - descricao
+ *         - valor
+ *         - categoria
+ *         - data
  *       properties:
  *         id:
  *           type: integer
  *           description: ID único da despesa
- *         description:
+ *         descricao:
  *           type: string
  *           description: Descrição da despesa
- *         amount:
+ *         valor:
  *           type: number
  *           format: float
  *           description: Valor da despesa
- *         category:
+ *         categoria:
  *           type: string
  *           description: Categoria da despesa
- *         despesasDate:
+ *         data:
  *           type: string
  *           format: date
  *           description: Data da despesa
  *       example:
  *         id: 1
- *         description: Compra de materiais de escritório
- *         amount: 150.75
- *         category: Material de Escritório
- *         despesasDate: "2024-06-15"
+ *         descricao: "Compra de materiais de escritório"
+ *         valor: 150.75
+ *         categoria: "Material de Escritório"
+ *         data: "2024-06-15"
  */
 
 /**
  * @swagger
- * /api/despesass:
+ * /api/despesas:
  *   post:
  *     summary: Cadastra uma nova despesa
  *     tags: [Despesas]
@@ -75,5 +75,27 @@ const router = express.Router();
  *         description: Token inválido ou ausente
  */
 router.post("/", authenticateToken, createDespesas);
+
+/**
+ * @swagger
+ * /api/despesas:
+ *   get:
+ *     summary: Lista todos as Despesas cadastradas
+ *     tags: [Despesas]
+ *     security:
+ *       - BearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Lista de Despesas retornada com sucesso
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Despesas'
+ *       401:
+ *         description: Token inválido ou ausente
+ */
+router.get("/", authenticateToken, getDespesas);
 
 module.exports = router;

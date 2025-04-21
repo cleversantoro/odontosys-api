@@ -20,6 +20,6 @@ const Agendamento = sequelize.define("Agendamentos", {
 // Relacionamentos
 Agendamento.belongsTo(Paciente, { foreignKey: "pacienteId", as: "paciente" });
 Agendamento.belongsTo(Profissional, { foreignKey: "profissionalId", as: "profissional" });
-Agendamento.belongsTo(Usuario, { foreignKey: "registeredBy", as: "registeredByUsuario" });
+Agendamento.belongsTo(Usuario, { foreignKey: "registeredBy", as: "usuario" });
 
 module.exports = Agendamento;
