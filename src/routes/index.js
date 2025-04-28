@@ -14,6 +14,8 @@ const googleCalendarRoutes = require("./googleCalendar.routes");
 const enderecoRoutes = require("./endereco.routes");
 const telefoneRoutes = require("./telefone.routes");
 const consultaRoutes = require("./consultas.routes");
+const documentoRoutes = require("./documento.routes");
+
 
 const router = express.Router();
 
@@ -31,5 +33,6 @@ router.use("/google-calendar", googleCalendarRoutes);
 router.use("/enderecos", enderecoRoutes);
 router.use("/telefones", telefoneRoutes);
 router.use("/consultas", consultaRoutes); // Adicionando a rota de consultas
+router.use("/documentos", documentoRoutes);
 
 module.exports = router;

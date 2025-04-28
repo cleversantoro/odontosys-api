@@ -1,7 +1,7 @@
 // routes/userViewRoutes.js
 const express = require('express');
 const { getConsultas } = require('../controllers/viewconsultas.controller');
-const authenticateToken = require('../middlewares/auth.middleware');
+//const authenticateToken = require('../middlewares/auth.middleware');
 
 const router = express.Router();
 
@@ -31,6 +31,6 @@ const router = express.Router();
  *       401:
  *         description: Token inválido ou ausente
  */
-router.get('/', getConsultas);
+router.get('/',  getConsultas);
 
 module.exports = router;

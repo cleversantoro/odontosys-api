@@ -196,43 +196,92 @@
         "type": "object",
         "required": [
           "nome",
+          "email",
           "sexo",
-          "dataNascimento"
+          "dataNascimento",
+          "registeredBy"
         ],
         "properties": {
           "id": {
             "type": "integer",
             "description": "ID único do paciente"
           },
-          "name": {
+          "codigo": {
+            "type": "string",
+            "description": "Código interno do paciente"
+          },
+          "nome": {
             "type": "string",
             "description": "Nome do paciente"
           },
           "email": {
             "type": "string",
             "format": "email",
-            "description": "E-mail do paciente"
+            "description": "Email do paciente"
           },
-          "phone": {
+          "sexo": {
             "type": "string",
-            "description": "Telefone do paciente"
+            "enum": [
+              "Masculino",
+              "Feminino"
+            ],
+            "description": "Sexo do paciente"
           },
-          "birthDate": {
-            "type": "date",
-            "description": "Data de Nascimento"
-          },
-          "address": {
+          "dataNascimento": {
             "type": "string",
-            "description": "Endereco"
+            "format": "date",
+            "description": "Data de nascimento"
+          },
+          "estadoCivil": {
+            "type": "string",
+            "enum": [
+              "Solteiro(a)",
+              "Casado(a)",
+              "Divorciado(a)",
+              "Viúvo(a)"
+            ],
+            "description": "Estado civil"
+          },
+          "nacionalidade": {
+            "type": "string",
+            "description": "Nacionalidade do paciente"
+          },
+          "naturalidade": {
+            "type": "string",
+            "description": "Cidade de nascimento"
+          },
+          "estado": {
+            "type": "string",
+            "description": "Estado de nascimento (UF)"
+          },
+          "dataEntrada": {
+            "type": "string",
+            "format": "date",
+            "description": "Data de entrada no sistema"
+          },
+          "registeredBy": {
+            "type": "integer",
+            "description": "ID do usuário que cadastrou"
+          },
+          "obs": {
+            "type": "string",
+            "description": "Observações adicionais sobre o paciente"
           }
         },
         "example": {
           "id": 1,
-          "name": "João Silva",
+          "codigo": "PAC001",
+          "nome": "João Silva",
           "email": "joao@email.com",
-          "phone": "11999999999",
-          "birthDate": "1990-01-01",
-          "address": "Rua Exemplo, 123, São Paulo, SP"
+          "sexo": "Masculino",
+          "dataNascimento": "1990-01-01",
+          "estadoCivil": "Solteiro(a)",
+          "nacionalidade": "Brasileiro",
+          "naturalidade": "São Paulo",
+          "estado": "SP",
+          "dataEntrada": "2024-04-25",
+          "obs": "Paciente com histórico de alergias",
+          "registeredBy": 1
         }
       },
       "Pagamento": {
@@ -761,6 +810,176 @@
         }
       }
     },
+    "/api/dados-clinicos": {
+      "post": {
+        "summary": "Cadastrar dados clínicos de um paciente",
+        "tags": [
+          "Dados Clínicos"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "grupoSanguineo": {
+                    "type": "string"
+                  },
+                  "alergias": {
+                    "type": "string"
+                  },
+                  "medicamentosContinuos": {
+                    "type": "string"
+                  },
+                  "doencasPreExistentes": {
+                    "type": "string"
+                  },
+                  "planoSaude": {
+                    "type": "string"
+                  },
+                  "numeroApolice": {
+                    "type": "string"
+                  },
+                  "pacienteId": {
+                    "type": "integer"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Dados clínicos cadastrados"
+          }
+        }
+      }
+    },
+    "/api/dados-clinicos/{pacienteId}": {
+      "get": {
+        "summary": "Buscar dados clínicos de um paciente",
+        "tags": [
+          "Dados Clínicos"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "pacienteId",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Dados clínicos encontrados"
+          },
+          "404": {
+            "description": "Dados clínicos não encontrados"
+          }
+        }
+      },
+      "put": {
+        "summary": "Atualizar dados clínicos de um paciente",
+        "tags": [
+          "Dados Clínicos"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "pacienteId",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "grupoSanguineo": {
+                    "type": "string"
+                  },
+                  "alergias": {
+                    "type": "string"
+                  },
+                  "medicamentosContinuos": {
+                    "type": "string"
+                  },
+                  "doencasPreExistentes": {
+                    "type": "string"
+                  },
+                  "planoSaude": {
+                    "type": "string"
+                  },
+                  "numeroApolice": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Dados clínicos atualizados"
+          },
+          "404": {
+            "description": "Dados clínicos não encontrados"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Excluir dados clínicos de um paciente",
+        "tags": [
+          "Dados Clínicos"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "pacienteId",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Dados clínicos excluídos"
+          },
+          "404": {
+            "description": "Dados clínicos não encontrados"
+          }
+        }
+      }
+    },
     "/api/despesas": {
       "post": {
         "summary": "Cadastra uma nova despesa",
@@ -831,11 +1050,297 @@
         }
       }
     },
+    "/api/documentos": {
+      "post": {
+        "summary": "Cria um novo documento",
+        "tags": [
+          "Documentos"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "numero": {
+                    "type": "string"
+                  },
+                  "tipo": {
+                    "type": "string",
+                    "enum": [
+                      "RG",
+                      "CPF",
+                      "CNH",
+                      "Passaporte",
+                      "Certidão de Nascimento",
+                      "Certidão de Casamento"
+                    ]
+                  },
+                  "emissor": {
+                    "type": "string"
+                  },
+                  "dataEmissao": {
+                    "type": "string",
+                    "format": "date"
+                  },
+                  "contato_id": {
+                    "type": "integer"
+                  },
+                  "contato_tipo": {
+                    "type": "string",
+                    "enum": [
+                      "paciente",
+                      "profissional"
+                    ]
+                  },
+                  "registeredBy": {
+                    "type": "integer"
+                  }
+                },
+                "required": [
+                  "numero",
+                  "tipo",
+                  "contato_id",
+                  "contato_tipo",
+                  "registeredBy"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Documento criado com sucesso"
+          },
+          "500": {
+            "description": "Erro interno do servidor"
+          }
+        }
+      },
+      "get": {
+        "summary": "Lista todos os documentos",
+        "tags": [
+          "Documentos"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de documentos retornada com sucesso"
+          },
+          "500": {
+            "description": "Erro interno do servidor"
+          }
+        }
+      }
+    },
+    "/api/documentos/{id}": {
+      "get": {
+        "summary": "Busca um documento pelo ID",
+        "tags": [
+          "Documentos"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "ID do documento"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Documento encontrado"
+          },
+          "404": {
+            "description": "Documento não encontrado"
+          },
+          "500": {
+            "description": "Erro interno do servidor"
+          }
+        }
+      },
+      "put": {
+        "summary": "Atualiza um documento pelo ID",
+        "tags": [
+          "Documentos"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "ID do documento"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "numero": {
+                    "type": "string"
+                  },
+                  "tipo": {
+                    "type": "string",
+                    "enum": [
+                      "RG",
+                      "CPF",
+                      "CNH",
+                      "Passaporte",
+                      "Certidão de Nascimento",
+                      "Certidão de Casamento"
+                    ]
+                  },
+                  "emissor": {
+                    "type": "string"
+                  },
+                  "dataEmissao": {
+                    "type": "string",
+                    "format": "date"
+                  },
+                  "contato_id": {
+                    "type": "integer"
+                  },
+                  "contato_tipo": {
+                    "type": "string",
+                    "enum": [
+                      "paciente",
+                      "profissional"
+                    ]
+                  },
+                  "registeredBy": {
+                    "type": "integer"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Documento atualizado com sucesso"
+          },
+          "404": {
+            "description": "Documento não encontrado"
+          },
+          "500": {
+            "description": "Erro interno do servidor"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Deleta um documento pelo ID",
+        "tags": [
+          "Documentos"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "ID do documento"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Documento deletado com sucesso"
+          },
+          "404": {
+            "description": "Documento não encontrado"
+          },
+          "500": {
+            "description": "Erro interno do servidor"
+          }
+        }
+      }
+    },
+    "/api/documentos/{contato_id}/{contato_tipo}": {
+      "get": {
+        "summary": "Busca um documento pelo ID do contato e tipo de contato",
+        "tags": [
+          "Documentos"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "contato_id",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "description": "ID do contato"
+          },
+          {
+            "in": "path",
+            "name": "contato_tipo",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Tipo de contato (paciente ou profissional)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Documento encontrado"
+          },
+          "404": {
+            "description": "Documento não encontrado"
+          }
+        }
+      }
+    },
     "/api/enderecos": {
       "get": {
         "summary": "Lista todos os endereços cadastrados",
         "tags": [
           "Endereços"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
         ],
         "responses": {
           "200": {
@@ -847,6 +1352,11 @@
         "summary": "Cria um novo endereço",
         "tags": [
           "Endereços"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
         ],
         "requestBody": {
           "required": true,
@@ -904,6 +1414,11 @@
         "tags": [
           "Endereços"
         ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -928,6 +1443,11 @@
         "summary": "Atualiza os dados de um endereço",
         "tags": [
           "Endereços"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
         ],
         "parameters": [
           {
@@ -997,6 +1517,11 @@
         "tags": [
           "Endereços"
         ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -1011,6 +1536,47 @@
         "responses": {
           "200": {
             "description": "Endereço excluído com sucesso"
+          },
+          "404": {
+            "description": "Endereço não encontrado"
+          }
+        }
+      }
+    },
+    "/api/enderecos/{contato_id}/{contato_tipo}": {
+      "get": {
+        "summary": "Busca um endereço pelo ID do contato e tipo de contato",
+        "tags": [
+          "Endereços"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "contato_id",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "description": "ID do contato"
+          },
+          {
+            "in": "path",
+            "name": "contato_tipo",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Tipo de contato (paciente ou profissional)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Endereço encontrado"
           },
           "404": {
             "description": "Endereço não encontrado"
@@ -1275,18 +1841,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "name": {
-                    "type": "string"
-                  },
-                  "email": {
-                    "type": "string"
-                  },
-                  "phone": {
-                    "type": "string"
-                  }
-                }
+                "$ref": "#/components/schemas/Paciente"
               }
             }
           }
@@ -1336,6 +1891,196 @@
           },
           "404": {
             "description": "Paciente não encontrado"
+          }
+        }
+      }
+    },
+    "/api/pacientes/completo": {
+      "post": {
+        "summary": "Cadastra um novo paciente juntamente com endereços, telefones, documentos e dados clínicos",
+        "tags": [
+          "Pacientes"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "paciente": {
+                    "type": "object",
+                    "required": [
+                      "nome",
+                      "email",
+                      "sexo",
+                      "dataNascimento"
+                    ],
+                    "properties": {
+                      "codigo": {
+                        "type": "string"
+                      },
+                      "nome": {
+                        "type": "string"
+                      },
+                      "email": {
+                        "type": "string",
+                        "format": "email"
+                      },
+                      "sexo": {
+                        "type": "string",
+                        "enum": [
+                          "Masculino",
+                          "Feminino"
+                        ]
+                      },
+                      "dataNascimento": {
+                        "type": "string",
+                        "format": "date"
+                      },
+                      "estadoCivil": {
+                        "type": "string",
+                        "enum": [
+                          "Solteiro(a)",
+                          "Casado(a)",
+                          "Divorciado(a)",
+                          "Viúvo(a)"
+                        ]
+                      },
+                      "nacionalidade": {
+                        "type": "string"
+                      },
+                      "naturalidade": {
+                        "type": "string"
+                      },
+                      "estado": {
+                        "type": "string"
+                      },
+                      "dataEntrada": {
+                        "type": "string",
+                        "format": "date"
+                      },
+                      "obs": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "enderecos": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "logradouro": {
+                          "type": "string"
+                        },
+                        "numero": {
+                          "type": "integer"
+                        },
+                        "bairro": {
+                          "type": "string"
+                        },
+                        "cidade": {
+                          "type": "string"
+                        },
+                        "estado": {
+                          "type": "string"
+                        },
+                        "cep": {
+                          "type": "string"
+                        },
+                        "pais": {
+                          "type": "string"
+                        },
+                        "complemento": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  },
+                  "telefones": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "numero": {
+                          "type": "string"
+                        },
+                        "tipo": {
+                          "type": "string",
+                          "enum": [
+                            "celular",
+                            "residencial",
+                            "comercial"
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  "documentos": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "numero": {
+                          "type": "string"
+                        },
+                        "tipo": {
+                          "type": "string",
+                          "enum": [
+                            "RG",
+                            "CPF",
+                            "CNH",
+                            "Passaporte",
+                            "Certidão de Nascimento",
+                            "Certidão de Casamento"
+                          ]
+                        },
+                        "emissor": {
+                          "type": "string"
+                        },
+                        "dataEmissao": {
+                          "type": "string",
+                          "format": "date"
+                        }
+                      }
+                    }
+                  },
+                  "dadosClinicos": {
+                    "type": "object",
+                    "properties": {
+                      "historicoMedico": {
+                        "type": "string"
+                      },
+                      "alergias": {
+                        "type": "string"
+                      },
+                      "observacoes": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Paciente e dados relacionados cadastrados com sucesso"
+          },
+          "400": {
+            "description": "Dados inválidos"
+          },
+          "401": {
+            "description": "Token inválido ou ausente"
+          },
+          "500": {
+            "description": "Erro interno do servidor"
           }
         }
       }
@@ -1854,6 +2599,11 @@
         "tags": [
           "Telefones"
         ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
         "responses": {
           "200": {
             "description": "Lista de telefones retornada com sucesso"
@@ -1864,6 +2614,11 @@
         "summary": "Cria um novo telefone",
         "tags": [
           "Telefones"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
         ],
         "requestBody": {
           "required": true,
@@ -1911,6 +2666,11 @@
         "tags": [
           "Telefones"
         ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -1935,6 +2695,11 @@
         "summary": "Atualiza os dados de um telefone",
         "tags": [
           "Telefones"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
         ],
         "parameters": [
           {
@@ -1994,6 +2759,11 @@
         "tags": [
           "Telefones"
         ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -2008,6 +2778,47 @@
         "responses": {
           "200": {
             "description": "Telefone excluído com sucesso"
+          },
+          "404": {
+            "description": "Telefone não encontrado"
+          }
+        }
+      }
+    },
+    "/api/telefones/{contato_id}/{contato_tipo}": {
+      "get": {
+        "summary": "Busca um documento pelo ID do contato e tipo de contato",
+        "tags": [
+          "Telefones"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "contato_id",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "description": "ID do contato"
+          },
+          {
+            "in": "path",
+            "name": "contato_tipo",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Tipo de contato (paciente ou profissional)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Telefone encontrado"
           },
           "404": {
             "description": "Telefone não encontrado"
@@ -2250,8 +3061,16 @@
       "description": "Busca as consultas do sistema"
     },
     {
+      "name": "Dados Clínicos",
+      "description": "Gerenciamento de dados clínicos de pacientes"
+    },
+    {
       "name": "Despesas",
       "description": "Gerenciamento de despesas do sistema"
+    },
+    {
+      "name": "Documentos",
+      "description": "Gerenciamento de documentos de pacientes e profissionais"
     },
     {
       "name": "Endereços",

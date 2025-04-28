@@ -1,6 +1,7 @@
 const express = require("express");
 const { authenticateToken } = require("../middlewares/auth.middleware");
 const { createPaciente, getPacientes, getPacienteById, updatePaciente, deletePaciente } = require("../controllers/paciente.controller");
+const { createPacienteCompleto } = require("../controllers/PacienteCompleto.controller");
 
 const router = express.Router();
 
@@ -19,35 +20,69 @@ const router = express.Router();
  *       type: object
  *       required:
  *         - nome
+ *         - email
  *         - sexo
  *         - dataNascimento
+ *         - registeredBy
  *       properties:
  *         id:
  *           type: integer
  *           description: ID único do paciente
- *         name:
+ *         codigo:
+ *           type: string
+ *           description: Código interno do paciente
+ *         nome:
  *           type: string
  *           description: Nome do paciente
  *         email:
  *           type: string
  *           format: email
- *           description: E-mail do paciente
- *         phone:
+ *           description: Email do paciente
+ *         sexo:
  *           type: string
- *           description: Telefone do paciente
- *         birthDate:
- *           type: date
- *           description: Data de Nascimento
- *         address:
+ *           enum: [Masculino, Feminino]
+ *           description: Sexo do paciente
+ *         dataNascimento:
  *           type: string
- *           description: Endereco
+ *           format: date
+ *           description: Data de nascimento
+ *         estadoCivil:
+ *           type: string
+ *           enum: [Solteiro(a), Casado(a), Divorciado(a), Viúvo(a)]
+ *           description: Estado civil
+ *         nacionalidade:
+ *           type: string
+ *           description: Nacionalidade do paciente
+ *         naturalidade:
+ *           type: string
+ *           description: Cidade de nascimento
+ *         estado:
+ *           type: string
+ *           description: Estado de nascimento (UF)
+ *         dataEntrada:
+ *           type: string
+ *           format: date
+ *           description: Data de entrada no sistema
+ *         registeredBy:
+ *           type: integer
+ *           description: ID do usuário que cadastrou
+ *         obs:
+ *           type: string
+ *           description: Observações adicionais sobre o paciente
  *       example:
  *         id: 1
- *         name: João Silva
+ *         codigo: PAC001
+ *         nome: João Silva
  *         email: joao@email.com
- *         phone: "11999999999"
- *         birthDate: "1990-01-01"
- *         address: Rua Exemplo, 123, São Paulo, SP
+ *         sexo: Masculino
+ *         dataNascimento: "1990-01-01"
+ *         estadoCivil: Solteiro(a)
+ *         nacionalidade: Brasileiro
+ *         naturalidade: São Paulo
+ *         estado: SP
+ *         dataEntrada: "2024-04-25"
+ *         obs: Paciente com histórico de alergias
+ *         registeredBy: 1
  */
 
 /**
@@ -145,14 +180,7 @@ router.post("/", authenticateToken, createPaciente);
  *       content:
  *         application/json:
  *           schema:
- *             type: object
- *             properties:
- *               name:
- *                 type: string
- *               email:
- *                 type: string
- *               phone:
- *                 type: string
+ *             $ref: '#/components/schemas/Paciente'
  *     responses:
  *       200:
  *         description: Paciente atualizado com sucesso
@@ -189,5 +217,122 @@ router.put("/:id", authenticateToken, updatePaciente);
  *         description: Token inválido ou ausente
  */
 router.delete("/:id", authenticateToken, deletePaciente);
+
+/**s
+ * @swagger
+ * /api/pacientes/completo:
+ *   post:
+ *     summary: Cadastra um novo paciente juntamente com endereços, telefones, documentos e dados clínicos
+ *     tags: [Pacientes]
+ *     security:
+ *       - BearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               paciente:
+ *                 type: object
+ *                 required:
+ *                   - nome
+ *                   - email
+ *                   - sexo
+ *                   - dataNascimento
+ *                 properties:
+ *                   codigo:
+ *                     type: string
+ *                   nome:
+ *                     type: string
+ *                   email:
+ *                     type: string
+ *                     format: email
+ *                   sexo:
+ *                     type: string
+ *                     enum: [Masculino, Feminino]
+ *                   dataNascimento:
+ *                     type: string
+ *                     format: date
+ *                   estadoCivil:
+ *                     type: string
+ *                     enum: [Solteiro(a), Casado(a), Divorciado(a), Viúvo(a)]
+ *                   nacionalidade:
+ *                     type: string
+ *                   naturalidade:
+ *                     type: string
+ *                   estado:
+ *                     type: string
+ *                   dataEntrada:
+ *                     type: string
+ *                     format: date
+ *                   obs:
+ *                     type: string
+ *               enderecos:
+ *                 type: array
+ *                 items:
+ *                   type: object
+ *                   properties:
+ *                     logradouro:
+ *                       type: string
+ *                     numero:
+ *                       type: integer
+ *                     bairro:
+ *                       type: string
+ *                     cidade:
+ *                       type: string
+ *                     estado:
+ *                       type: string
+ *                     cep:
+ *                       type: string
+ *                     pais:
+ *                       type: string
+ *                     complemento:
+ *                       type: string
+ *               telefones:
+ *                 type: array
+ *                 items:
+ *                   type: object
+ *                   properties:
+ *                     numero:
+ *                       type: string
+ *                     tipo:
+ *                       type: string
+ *                       enum: [celular, residencial, comercial]
+ *               documentos:
+ *                 type: array
+ *                 items:
+ *                   type: object
+ *                   properties:
+ *                     numero:
+ *                       type: string
+ *                     tipo:
+ *                       type: string
+ *                       enum: [RG, CPF, CNH, Passaporte, Certidão de Nascimento, Certidão de Casamento]
+ *                     emissor:
+ *                       type: string
+ *                     dataEmissao:
+ *                       type: string
+ *                       format: date
+ *               dadosClinicos:
+ *                 type: object
+ *                 properties:
+ *                   historicoMedico:
+ *                     type: string
+ *                   alergias:
+ *                     type: string
+ *                   observacoes:
+ *                     type: string
+ *     responses:
+ *       201:
+ *         description: Paciente e dados relacionados cadastrados com sucesso
+ *       400:
+ *         description: Dados inválidos
+ *       401:
+ *         description: Token inválido ou ausente
+ *       500:
+ *         description: Erro interno do servidor
+ */
+router.post("/completo", authenticateToken, createPacienteCompleto);
 
 module.exports = router;

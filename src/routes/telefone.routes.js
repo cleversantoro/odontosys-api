@@ -1,11 +1,13 @@
 const express = require("express");
-const {
-  createTelefone,
-  getTelefones,
-  getTelefoneById,
-  updateTelefone,
-  deleteTelefone,
-} = require("../controllers/telefone.controller");
+const { 
+        createTelefone, 
+        getTelefones, 
+        getTelefoneById, 
+        updateTelefone, 
+        deleteTelefone, 
+        getTelefoneByContatoIdandTipo
+    } = require("../controllers/telefone.controller");
+const { authenticateToken } = require("../middlewares/auth.middleware");
 
 const router = express.Router();
 
@@ -22,11 +24,13 @@ const router = express.Router();
  *   get:
  *     summary: Lista todos os telefones cadastrados
  *     tags: [Telefones]
+ *     security:
+ *       - BearerAuth: []
  *     responses:
  *       200:
  *         description: Lista de telefones retornada com sucesso
  */
-router.get("/", getTelefones);
+router.get("/", authenticateToken, getTelefones);
 
 /**
  * @swagger
@@ -34,6 +38,8 @@ router.get("/", getTelefones);
  *   get:
  *     summary: Busca um telefone pelo ID
  *     tags: [Telefones]
+ *     security:
+ *       - BearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -47,7 +53,36 @@ router.get("/", getTelefones);
  *       404:
  *         description: Telefone não encontrado
  */
-router.get("/:id", getTelefoneById);
+router.get("/:id", authenticateToken, getTelefoneById);
+
+/**
+ * @swagger
+ * /api/telefones/{contato_id}/{contato_tipo}:
+ *   get:
+ *     summary: Busca um documento pelo ID do contato e tipo de contato
+ *     tags: [Telefones]
+ *     security:
+ *       - BearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: contato_id
+ *         schema:
+ *           type: integer
+ *         required: true
+ *         description: ID do contato
+ *       - in: path
+ *         name: contato_tipo
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: Tipo de contato (paciente ou profissional)
+ *     responses:
+ *       200:
+ *         description: Telefone encontrado
+ *       404:
+ *         description: Telefone não encontrado
+ */
+router.get("/:contato_id/:contato_tipo", authenticateToken, getTelefoneByContatoIdandTipo);
 
 /**
  * @swagger
@@ -55,6 +90,8 @@ router.get("/:id", getTelefoneById);
  *   post:
  *     summary: Cria um novo telefone
  *     tags: [Telefones]
+ *     security:
+ *       - BearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -76,7 +113,7 @@ router.get("/:id", getTelefoneById);
  *       201:
  *         description: Telefone criado com sucesso
  */
-router.post("/", createTelefone);
+router.post("/", authenticateToken, createTelefone);
 
 /**
  * @swagger
@@ -84,6 +121,8 @@ router.post("/", createTelefone);
  *   put:
  *     summary: Atualiza os dados de um telefone
  *     tags: [Telefones]
+ *     security:
+ *       - BearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -114,7 +153,7 @@ router.post("/", createTelefone);
  *       404:
  *         description: Telefone não encontrado
  */
-router.put("/:id", updateTelefone);
+router.put("/:id", authenticateToken, updateTelefone);
 
 /**
  * @swagger
@@ -122,6 +161,8 @@ router.put("/:id", updateTelefone);
  *   delete:
  *     summary: Exclui um telefone
  *     tags: [Telefones]
+ *     security:
+ *       - BearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -135,6 +176,6 @@ router.put("/:id", updateTelefone);
  *       404:
  *         description: Telefone não encontrado
  */
-router.delete("/:id", deleteTelefone);
+router.delete("/:id", authenticateToken, deleteTelefone);
 
 module.exports = router;

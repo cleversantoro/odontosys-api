@@ -1,6 +1,5 @@
 const express = require("express");
 const { authenticateToken } = require("../middlewares/auth.middleware");
-
 const { createProfissional, getProfissionais, getProfissionalById, updateProfissional, deleteProfissional, } = require("../controllers/profissional.controller");
 
 const router = express.Router();

@@ -1,11 +1,14 @@
 const express = require("express");
-const {
-  createEndereco,
-  getEnderecos,
-  getEnderecoById,
-  updateEndereco,
-  deleteEndereco,
-} = require("../controllers/endereco.controller");
+const { 
+        createEndereco, 
+        getEnderecos, 
+        getEnderecoById, 
+        updateEndereco, 
+        deleteEndereco, 
+        getEnderecoByContatoIdandTipo
+    } = require("../controllers/endereco.controller");
+
+const { authenticateToken } = require("../middlewares/auth.middleware");
 
 const router = express.Router();
 
@@ -22,11 +25,13 @@ const router = express.Router();
  *   get:
  *     summary: Lista todos os endereços cadastrados
  *     tags: [Endereços]
+ *     security:
+ *       - BearerAuth: []
  *     responses:
  *       200:
  *         description: Lista de endereços retornada com sucesso
  */
-router.get("/", getEnderecos);
+router.get("/", authenticateToken, getEnderecos);
 
 /**
  * @swagger
@@ -34,6 +39,8 @@ router.get("/", getEnderecos);
  *   get:
  *     summary: Busca um endereço pelo ID
  *     tags: [Endereços]
+ *     security:
+ *       - BearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -47,7 +54,36 @@ router.get("/", getEnderecos);
  *       404:
  *         description: Endereço não encontrado
  */
-router.get("/:id", getEnderecoById);
+router.get("/:id", authenticateToken, getEnderecoById);
+
+/**
+ * @swagger
+ * /api/enderecos/{contato_id}/{contato_tipo}:
+ *   get:
+ *     summary: Busca um endereço pelo ID do contato e tipo de contato
+ *     tags: [Endereços]
+ *     security:
+ *       - BearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: contato_id
+ *         schema:
+ *           type: integer
+ *         required: true
+ *         description: ID do contato
+ *       - in: path
+ *         name: contato_tipo
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: Tipo de contato (paciente ou profissional)
+ *     responses:
+ *       200:
+ *         description: Endereço encontrado
+ *       404:
+ *         description: Endereço não encontrado
+ */
+router.get("/:contato_id/:contato_tipo", authenticateToken, getEnderecoByContatoIdandTipo);
 
 /**
  * @swagger
@@ -55,6 +91,8 @@ router.get("/:id", getEnderecoById);
  *   post:
  *     summary: Cria um novo endereço
  *     tags: [Endereços]
+ *     security:
+ *       - BearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -85,7 +123,7 @@ router.get("/:id", getEnderecoById);
  *       201:
  *         description: Endereço criado com sucesso
  */
-router.post("/", createEndereco);
+router.post("/", authenticateToken, createEndereco);
 
 /**
  * @swagger
@@ -93,6 +131,8 @@ router.post("/", createEndereco);
  *   put:
  *     summary: Atualiza os dados de um endereço
  *     tags: [Endereços]
+ *     security:
+ *       - BearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -132,7 +172,7 @@ router.post("/", createEndereco);
  *       404:
  *         description: Endereço não encontrado
  */
-router.put("/:id", updateEndereco);
+router.put("/:id", authenticateToken, updateEndereco);
 
 /**
  * @swagger
@@ -140,6 +180,8 @@ router.put("/:id", updateEndereco);
  *   delete:
  *     summary: Exclui um endereço
  *     tags: [Endereços]
+ *     security:
+ *       - BearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -153,6 +195,6 @@ router.put("/:id", updateEndereco);
  *       404:
  *         description: Endereço não encontrado
  */
-router.delete("/:id", deleteEndereco);
+router.delete("/:id", authenticateToken, deleteEndereco);
 
 module.exports = router;

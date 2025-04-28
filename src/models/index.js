@@ -5,13 +5,9 @@ const { Sequelize, DataTypes } = require('sequelize');
 // Configura a conexão
 const sequelize = new Sequelize(
   'odonto', 
-  'admin', 
-  'admin', 
-  //'root',
-  //'root',
+  'root',
+  'root',
   {  
-
-    
     host: 'db',  
     //host: 'localhost',  
     dialect: 'mysql', 

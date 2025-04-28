@@ -4,7 +4,7 @@ const Usuario = require("../models/usuario.model");
 const Token = require("../models/token.model");
 
 const generateTokens = (usuario) => {
-  const accessToken = jwt.sign({ id: usuario.id, email: usuario.email }, process.env.JWT_SECRET, { expiresIn: "15m" });
+  const accessToken = jwt.sign({ id: usuario.id, email: usuario.email }, process.env.JWT_SECRET, { expiresIn: "1h" });
   const refreshToken = jwt.sign({ id: usuario.id }, process.env.JWT_REFRESH_SECRET, { expiresIn: "7d" });
   return { accessToken, refreshToken };
 };
@@ -24,7 +24,6 @@ exports.login = async (req, res) => {
   try {
     const { email, senha } = req.body;
     const usuario = await Usuario.findOne({ where: { email } });
-
     //console.log(usuario);
 
     if (!usuario || !(await bcrypt.compare(senha, usuario.senha))) {
@@ -41,15 +40,15 @@ exports.login = async (req, res) => {
   }
 };
 
-exports.refreshToken = async (req, res) => {
+exports.refresh = async (req, res) => {
   try {
     const { token } = req.body;
-    console.log(token);
+    //console.log(token);
 
     if (!token) return res.status(401).json({ error: "Token necessário" });
 
     const storedToken = await Token.findOne({ where: { token } });
-    console.log(storedToken);
+    //console.log(storedToken);
     
     if (!storedToken) return res.status(403).json({ error: "Refresh Token inválido" });
 

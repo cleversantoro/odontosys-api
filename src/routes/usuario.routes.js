@@ -1,4 +1,5 @@
 const express = require("express");
+const { authenticateToken } = require("../middlewares/auth.middleware");
 const { getAllUsuarios, createUsuario } = require("../controllers/usuario.controller");
 
 const router = express.Router();
@@ -56,7 +57,7 @@ const router = express.Router();
  *       401:
  *         description: Token inválido ou ausente
  */
-router.get("/", getAllUsuarios);
+router.get("/", authenticateToken, getAllUsuarios);
 
 /**
  * @swagger
@@ -94,6 +95,6 @@ router.get("/", getAllUsuarios);
  *       401:
  *         description: Token inválido ou ausente
  */
-router.post("/", createUsuario);
+router.post("/", authenticateToken, createUsuario);
 
 module.exports = router;

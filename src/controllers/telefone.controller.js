@@ -42,6 +42,35 @@ exports.getTelefoneById = async (req, res) => {
   }
 };
 
+exports.getTelefoneByContatoIdandTipo = async (req, res) => {
+  try {
+    let { contato_id, contato_tipo } = req.params;
+
+    // Tratamento de tipos: contato_id vira inteiro
+    contato_id = Number(contato_id);
+
+    if (isNaN(contato_id) || !contato_tipo) {
+      return res.status(400).json({ error: "Parâmetros inválidos: contato_id deve ser um número e contato_tipo não pode ser vazio" });
+    }
+
+    const telefone = await Telefone.findAll({
+      where: {
+        contato_id: contato_id,
+        contato_tipo: contato_tipo.toLowerCase(), // se quiser padronizar, mas depende da sua tabela
+      },
+    });
+
+    if (!telefone) {
+      return res.status(404).json({ error: "Telefone não encontrado" });
+    }
+
+    res.status(200).json(telefone);
+  } catch (error) {
+    console.error("Erro ao buscar telefone:", error);
+    res.status(500).json({ error: "Erro ao buscar telefone" });
+  }
+};
+
 exports.updateTelefone = async (req, res) => {
   try {
     const { numero, tipo, contato_id, contato_tipo } = req.body;

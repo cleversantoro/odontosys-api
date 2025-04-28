@@ -1,5 +1,5 @@
 const express = require("express");
-const { register, login, refreshToken, logout } = require("../controllers/auth.controller");
+const { register, login, refresh, logout } = require("../controllers/auth.controller");
 
 const router = express.Router();
 
@@ -143,7 +143,7 @@ router.post("/login", login);
  *       500:
  *         description: Erro no servidor
  */
-router.post("/refresh", refreshToken);
+router.post("/refresh", refresh);
 
 /**
  * @swagger
