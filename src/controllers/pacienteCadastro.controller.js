@@ -5,7 +5,7 @@ const Telefone = require("../models/telefone.model");
 const Documento = require("../models/documento.model");
 const DadoClinico = require("../models/dadoClinico.model"); // supondo que tenha um model pra isso
 
-exports.createPacienteCompleto = async (req, res) => {
+exports.createPacienteCadastro = async (req, res) => {
   const t = await sequelize.transaction(); // <- Transação pra garantir tudo ou nada
 
   try {
@@ -22,46 +22,36 @@ exports.createPacienteCompleto = async (req, res) => {
     // Cria endereços
     if (enderecos && enderecos.length > 0) {
       for (const endereco of enderecos) {
-        await Endereco.create({
-          ...endereco,
-          contato_id: newPaciente.id,
-          contato_tipo: "paciente",
-          registeredBy
-        }, { transaction: t });
+        await Endereco.create(
+          { ...endereco, contato_id: newPaciente.id, contato_tipo: "paciente", registeredBy },
+          { transaction: t });
       }
     }
 
     // Cria telefones
     if (telefones && telefones.length > 0) {
       for (const telefone of telefones) {
-        await Telefone.create({
-          ...telefone,
-          contato_id: newPaciente.id,
-          contato_tipo: "paciente",
-          registeredBy
-        }, { transaction: t });
+        await Telefone.create(
+          { ...telefone, contato_id: newPaciente.id, contato_tipo: "paciente", registeredBy },
+          { transaction: t });
       }
     }
 
     // Cria documentos
     if (documentos && documentos.length > 0) {
       for (const documento of documentos) {
-        await Documento.create({
-          ...documento,
-          contato_id: newPaciente.id,
-          contato_tipo: "paciente",
-          registeredBy
-        }, { transaction: t });
+        await Documento.create(
+          { ...documento, contato_id: newPaciente.id, contato_tipo: "paciente", registeredBy },
+          { transaction: t });
       }
     }
 
     // Cria dados clínicos
     if (dadosClinicos) {
-      await DadoClinico.create({
-        ...dadosClinicos,
-        pacienteId: newPaciente.id,
-        registeredBy
-      }, { transaction: t });
+      await DadoClinico.create(
+        { ...dadosClinicos, pacienteId: newPaciente.id, registeredBy },
+        { transaction: t }
+      );
     }
 
     await t.commit(); // Tudo deu certo? Commit!

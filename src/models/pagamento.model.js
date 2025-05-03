@@ -6,17 +6,29 @@ const Profissional = require("./profissional.model");
 
 const Pagamento = sequelize.define("Pagamentos", {
   id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
-  pacienteId: { type: DataTypes.INTEGER, allowNull: false },
-  profissionalId: { type: DataTypes.INTEGER, allowNull: false },
+
+  pacienteId: {
+    type: DataTypes.INTEGER, allowNull: false,
+    references: { model: "Pacientes", key: "id" }
+  },
+
+  profissionalId: {
+    type: DataTypes.INTEGER, allowNull: false,
+    references: { model: "Profissionais", key: "id" }
+  },
+
   valor: { type: DataTypes.FLOAT, allowNull: false },
+
   tipoPagamento: {
     type: DataTypes.ENUM("Particular", "Convênio", "Comissão"),
     allowNull: false
   },
+
   status: {
     type: DataTypes.ENUM("Pendente", "Pago"),
     defaultValue: "Pendente"
   },
+
   data: { type: DataTypes.DATE, allowNull: false },
   registeredBy: { type: DataTypes.INTEGER, allowNull: false }
 });

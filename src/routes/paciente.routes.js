@@ -1,7 +1,7 @@
 const express = require("express");
 const { authenticateToken } = require("../middlewares/auth.middleware");
 const { createPaciente, getPacientes, getPacienteById, updatePaciente, deletePaciente } = require("../controllers/paciente.controller");
-const { createPacienteCompleto } = require("../controllers/PacienteCompleto.controller");
+const { createPacienteCadastro } = require("../controllers/pacienteCadastro.controller");
 
 const router = express.Router();
 
@@ -220,7 +220,7 @@ router.delete("/:id", authenticateToken, deletePaciente);
 
 /**s
  * @swagger
- * /api/pacientes/completo:
+ * /api/pacientes/cadastro:
  *   post:
  *     summary: Cadastra um novo paciente juntamente com endereços, telefones, documentos e dados clínicos
  *     tags: [Pacientes]
@@ -333,6 +333,6 @@ router.delete("/:id", authenticateToken, deletePaciente);
  *       500:
  *         description: Erro interno do servidor
  */
-router.post("/completo", authenticateToken, createPacienteCompleto);
+router.post("/cadastro", authenticateToken, createPacienteCadastro);
 
 module.exports = router;

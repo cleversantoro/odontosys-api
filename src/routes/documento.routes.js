@@ -12,6 +12,57 @@ const router = express.Router();
  */
 
 /**
+* @swagger
+* components:
+*   schemas:
+*     Documento:
+*       type: object
+*       required:
+*         - numero
+*         - tipo
+*         - contato_id
+*         - contato_tipo
+*         - registeredBy
+*       properties:
+*         id:
+*           type: integer
+*           description: ID único do documento
+*         numero:
+*           type: string
+*           description: Número do documento
+*         tipo:
+*           type: string
+*           enum: [RG, CPF, CNH, Passaporte, Certidão de Nascimento, Certidão de Casamento]
+*           description: Tipo do documento
+*         emissor:
+*           type: string
+*           description: Órgão emissor do documento
+*         dataEmissao:
+*           type: string
+*           format: date
+*           description: Data de emissão do documento
+*         contato_id:
+*           type: integer
+*           description: ID do contato associado ao documento
+*         contato_tipo:
+*           type: string
+*           enum: [paciente, profissional]
+*           description: Tipo do contato associado (paciente ou profissional)
+*         registeredBy:
+*           type: integer
+*           description: ID do usuário que registrou o documento
+*       example:
+*         id: 1
+*         numero: "123456789"
+*         tipo: "RG"
+*         emissor: "SSP-SP"
+*         dataEmissao: "2025-01-01"
+*         contato_id: 42
+*         contato_tipo: "paciente"
+*         registeredBy: 10
+*/
+
+/**
  * @swagger
  * /api/documentos:
  *   post:
@@ -24,31 +75,7 @@ const router = express.Router();
  *       content:
  *         application/json:
  *           schema:
- *             type: object
- *             properties:
- *               numero:
- *                 type: string
- *               tipo:
- *                 type: string
- *                 enum: [RG, CPF, CNH, Passaporte, Certidão de Nascimento, Certidão de Casamento]
- *               emissor:
- *                 type: string
- *               dataEmissao:
- *                 type: string
- *                 format: date
- *               contato_id:
- *                 type: integer
- *               contato_tipo:
- *                 type: string
- *                 enum: [paciente, profissional]
- *               registeredBy:
- *                 type: integer
- *             required:
- *               - numero
- *               - tipo
- *               - contato_id
- *               - contato_tipo
- *               - registeredBy
+ *              $ref: '#/components/schemas/Documento'
  *     responses:
  *       201:
  *         description: Documento criado com sucesso
@@ -70,6 +97,10 @@ router.post("/", authenticateToken, documentoController.createDocumento);
  *         description: Lista de documentos retornada com sucesso
  *       500:
  *         description: Erro interno do servidor
+ *     content: 
+ *       application/json:
+ *       schema:
+ *         $ref: '#/components/schemas/Documento'
  */
 router.get("/", authenticateToken, documentoController.getAllDocumentos);
 
@@ -85,9 +116,6 @@ router.get("/", authenticateToken, documentoController.getAllDocumentos);
  *       - in: path
  *         name: id
  *         required: true
- *         schema:
- *           type: integer
- *         description: ID do documento
  *     responses:
  *       200:
  *         description: Documento encontrado
@@ -95,6 +123,10 @@ router.get("/", authenticateToken, documentoController.getAllDocumentos);
  *         description: Documento não encontrado
  *       500:
  *         description: Erro interno do servidor
+ *     content:
+ *       application/json:
+ *         schema:
+ *           $ref: '#/components/schemas/Documento'
  */
 router.get("/:id", authenticateToken, documentoController.getDocumentoById);
 
@@ -116,14 +148,16 @@ router.get("/:id", authenticateToken, documentoController.getDocumentoById);
  *       - in: path
  *         name: contato_tipo
  *         schema:
- *           type: string
- *         required: true
- *         description: Tipo de contato (paciente ou profissional)
+ *           type: integer
  *     responses:
  *       200:
  *         description: Documento encontrado
  *       404:
  *         description: Documento não encontrado
+ *     content:
+ *      application/json:
+ *        schema:
+ *          $ref: '#/components/schemas/Documento' 
  */
 router.get("/:contato_id/:contato_tipo", authenticateToken, documentoController.getDocumentosByContatoIdandTipo);
 
@@ -147,25 +181,7 @@ router.get("/:contato_id/:contato_tipo", authenticateToken, documentoController.
  *       content:
  *         application/json:
  *           schema:
- *             type: object
- *             properties:
- *               numero:
- *                 type: string
- *               tipo:
- *                 type: string
- *                 enum: [RG, CPF, CNH, Passaporte, Certidão de Nascimento, Certidão de Casamento]
- *               emissor:
- *                 type: string
- *               dataEmissao:
- *                 type: string
- *                 format: date
- *               contato_id:
- *                 type: integer
- *               contato_tipo:
- *                 type: string
- *                 enum: [paciente, profissional]
- *               registeredBy:
- *                 type: integer
+ *              $ref: '#/components/schemas/Documento'
  *     responses:
  *       200:
  *         description: Documento atualizado com sucesso

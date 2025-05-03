@@ -137,6 +137,101 @@
           "refreshToken": "dGlzIGlzIGEgdGVzdCB0b2tlbi4uLg=="
         }
       },
+      "Consultas": {
+        "type": "Array",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "ID único da consulta"
+          },
+          "nome_paciente": {
+            "type": "integer",
+            "description": "nome do paciente associado"
+          },
+          "nome_profissional": {
+            "type": "integer",
+            "description": "nome do profissional associado"
+          },
+          "data_agendamento": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Data e hora da consulta"
+          },
+          "situacao": {
+            "type": "string",
+            "enum": [
+              "Agendada",
+              "Confirmada",
+              "Cancelada",
+              "Realizada"
+            ],
+            "description": "situacao da consulta"
+          },
+          "obs": {
+            "type": "string",
+            "description": "Observações adicionais sobre a consulta"
+          }
+        },
+        "example": {
+          "id": 1,
+          "nome_paciente": "João da Silva",
+          "nome_profissional": "Dr. Maria Oliveira",
+          "data_agendamento": "2025-05-02T14:00:00Z",
+          "situacao": "Agendada",
+          "observacoes": "Consulta de rotina"
+        }
+      },
+      "DadoClinico": {
+        "type": "object",
+        "required": [
+          "grupoSanguineo",
+          "pacienteId"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "ID único do dado clínico"
+          },
+          "grupoSanguineo": {
+            "type": "string",
+            "description": "Grupo sanguíneo do paciente"
+          },
+          "alergias": {
+            "type": "string",
+            "description": "Alergias conhecidas do paciente"
+          },
+          "medicamentosContinuos": {
+            "type": "string",
+            "description": "Medicamentos de uso contínuo do paciente"
+          },
+          "doencasPreExistentes": {
+            "type": "string",
+            "description": "Doenças pré-existentes do paciente"
+          },
+          "planoSaude": {
+            "type": "string",
+            "description": "Nome do plano de saúde do paciente"
+          },
+          "numeroApolice": {
+            "type": "string",
+            "description": "Número da apólice do plano de saúde"
+          },
+          "pacienteId": {
+            "type": "integer",
+            "description": "ID do paciente associado"
+          }
+        },
+        "example": {
+          "id": 1,
+          "grupoSanguineo": "O+",
+          "alergias": "Amendoim, Penicilina",
+          "medicamentosContinuos": "Insulina",
+          "doencasPreExistentes": "Diabetes",
+          "planoSaude": "Unimed",
+          "numeroApolice": "123456789",
+          "pacienteId": 42
+        }
+      },
       "Despesas": {
         "type": "object",
         "required": [
@@ -190,6 +285,73 @@
           "pacienteId": "João da Silva",
           "pacienteEmail": "joao.silva@gmail.com",
           "profissionalId": "Dr. José"
+        }
+      },
+      "Documento": {
+        "type": "object",
+        "required": [
+          "numero",
+          "tipo",
+          "contato_id",
+          "contato_tipo",
+          "registeredBy"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "ID único do documento"
+          },
+          "numero": {
+            "type": "string",
+            "description": "Número do documento"
+          },
+          "tipo": {
+            "type": "string",
+            "enum": [
+              "RG",
+              "CPF",
+              "CNH",
+              "Passaporte",
+              "Certidão de Nascimento",
+              "Certidão de Casamento"
+            ],
+            "description": "Tipo do documento"
+          },
+          "emissor": {
+            "type": "string",
+            "description": "Órgão emissor do documento"
+          },
+          "dataEmissao": {
+            "type": "string",
+            "format": "date",
+            "description": "Data de emissão do documento"
+          },
+          "contato_id": {
+            "type": "integer",
+            "description": "ID do contato associado ao documento"
+          },
+          "contato_tipo": {
+            "type": "string",
+            "enum": [
+              "paciente",
+              "profissional"
+            ],
+            "description": "Tipo do contato associado (paciente ou profissional)"
+          },
+          "registeredBy": {
+            "type": "integer",
+            "description": "ID do usuário que registrou o documento"
+          }
+        },
+        "example": {
+          "id": 1,
+          "numero": "123456789",
+          "tipo": "RG",
+          "emissor": "SSP-SP",
+          "dataEmissao": "2025-01-01",
+          "contato_id": 42,
+          "contato_tipo": "paciente",
+          "registeredBy": 10
         }
       },
       "Paciente": {
@@ -799,7 +961,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array"
+                  "$ref": "#/components/schemas/Consultas"
                 }
               }
             }
@@ -826,30 +988,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "grupoSanguineo": {
-                    "type": "string"
-                  },
-                  "alergias": {
-                    "type": "string"
-                  },
-                  "medicamentosContinuos": {
-                    "type": "string"
-                  },
-                  "doencasPreExistentes": {
-                    "type": "string"
-                  },
-                  "planoSaude": {
-                    "type": "string"
-                  },
-                  "numeroApolice": {
-                    "type": "string"
-                  },
-                  "pacienteId": {
-                    "type": "integer"
-                  }
-                }
+                "$ref": "#/components/schemas/DadoClinico"
               }
             }
           }
@@ -878,7 +1017,7 @@
             "name": "pacienteId",
             "required": true,
             "schema": {
-              "type": "integer"
+              "$ref": "#/components/schemas/DadoClinico"
             }
           }
         ],
@@ -916,27 +1055,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "grupoSanguineo": {
-                    "type": "string"
-                  },
-                  "alergias": {
-                    "type": "string"
-                  },
-                  "medicamentosContinuos": {
-                    "type": "string"
-                  },
-                  "doencasPreExistentes": {
-                    "type": "string"
-                  },
-                  "planoSaude": {
-                    "type": "string"
-                  },
-                  "numeroApolice": {
-                    "type": "string"
-                  }
-                }
+                "$ref": "#/components/schemas/DadoClinico"
               }
             }
           }
@@ -1066,50 +1185,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "numero": {
-                    "type": "string"
-                  },
-                  "tipo": {
-                    "type": "string",
-                    "enum": [
-                      "RG",
-                      "CPF",
-                      "CNH",
-                      "Passaporte",
-                      "Certidão de Nascimento",
-                      "Certidão de Casamento"
-                    ]
-                  },
-                  "emissor": {
-                    "type": "string"
-                  },
-                  "dataEmissao": {
-                    "type": "string",
-                    "format": "date"
-                  },
-                  "contato_id": {
-                    "type": "integer"
-                  },
-                  "contato_tipo": {
-                    "type": "string",
-                    "enum": [
-                      "paciente",
-                      "profissional"
-                    ]
-                  },
-                  "registeredBy": {
-                    "type": "integer"
-                  }
-                },
-                "required": [
-                  "numero",
-                  "tipo",
-                  "contato_id",
-                  "contato_tipo",
-                  "registeredBy"
-                ]
+                "$ref": "#/components/schemas/Documento"
               }
             }
           }
@@ -1140,6 +1216,12 @@
           "500": {
             "description": "Erro interno do servidor"
           }
+        },
+        "content": {
+          "application/json": null,
+          "schema": {
+            "$ref": "#/components/schemas/Documento"
+          }
         }
       }
     },
@@ -1158,11 +1240,7 @@
           {
             "in": "path",
             "name": "id",
-            "required": true,
-            "schema": {
-              "type": "integer"
-            },
-            "description": "ID do documento"
+            "required": true
           }
         ],
         "responses": {
@@ -1174,6 +1252,13 @@
           },
           "500": {
             "description": "Erro interno do servidor"
+          }
+        },
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Documento"
+            }
           }
         }
       },
@@ -1203,43 +1288,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "numero": {
-                    "type": "string"
-                  },
-                  "tipo": {
-                    "type": "string",
-                    "enum": [
-                      "RG",
-                      "CPF",
-                      "CNH",
-                      "Passaporte",
-                      "Certidão de Nascimento",
-                      "Certidão de Casamento"
-                    ]
-                  },
-                  "emissor": {
-                    "type": "string"
-                  },
-                  "dataEmissao": {
-                    "type": "string",
-                    "format": "date"
-                  },
-                  "contato_id": {
-                    "type": "integer"
-                  },
-                  "contato_tipo": {
-                    "type": "string",
-                    "enum": [
-                      "paciente",
-                      "profissional"
-                    ]
-                  },
-                  "registeredBy": {
-                    "type": "integer"
-                  }
-                }
+                "$ref": "#/components/schemas/Documento"
               }
             }
           }
@@ -1315,10 +1364,8 @@
             "in": "path",
             "name": "contato_tipo",
             "schema": {
-              "type": "string"
-            },
-            "required": true,
-            "description": "Tipo de contato (paciente ou profissional)"
+              "type": "integer"
+            }
           }
         ],
         "responses": {
@@ -1327,6 +1374,13 @@
           },
           "404": {
             "description": "Documento não encontrado"
+          }
+        },
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Documento"
+            }
           }
         }
       }
@@ -1895,7 +1949,7 @@
         }
       }
     },
-    "/api/pacientes/completo": {
+    "/api/pacientes/cadastro": {
       "post": {
         "summary": "Cadastra um novo paciente juntamente com endereços, telefones, documentos e dados clínicos",
         "tags": [

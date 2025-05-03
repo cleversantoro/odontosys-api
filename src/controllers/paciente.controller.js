@@ -3,36 +3,13 @@ const Paciente = require("../models/paciente.model");
 // Criar novo paciente
 exports.createPaciente = async (req, res) => {
   try {
-    const {
-      codigo,
-      nome,
-      email,
-      sexo,
-      dataNascimento,
-      estadoCivil,
-      nacionalidade,
-      naturalidade,
-      estado,
-      dataEntrada,
-      obs
-    } = req.body;
+    const { codigo, nome, email, sexo, dataNascimento, estadoCivil, nacionalidade, naturalidade, estado, dataEntrada, obs } = req.body;
 
     const registeredBy = req.usuario.id; // ID do usuário autenticado
 
-    const newPaciente = await Paciente.create({
-      codigo,
-      nome,
-      email,
-      sexo,
-      dataNascimento,
-      estadoCivil,
-      nacionalidade,
-      naturalidade,
-      estado,
-      dataEntrada,
-      obs,
-      registeredBy
-    });
+    const newPaciente = await Paciente.create(
+      { codigo, nome, email, sexo, dataNascimento, estadoCivil, nacionalidade, naturalidade, estado, dataEntrada, obs, registeredBy }
+    );
 
     res.status(201).json(newPaciente);
   } catch (error) {

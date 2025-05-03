@@ -23,8 +23,6 @@ const Paciente = sequelize.define("Pacientes", {
   obs: { type: DataTypes.TEXT, allowNull: true },
   
   registeredBy: { type: DataTypes.INTEGER, allowNull: false },
-  createdAt: { type: DataTypes.DATE, allowNull: false, defaultValue: DataTypes.NOW },
-  updatedAt: { type: DataTypes.DATE, allowNull: false, defaultValue: DataTypes.NOW }
 });
 
 // Relacionamento: Um usuário pode registrar vários pacientes

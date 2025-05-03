@@ -12,6 +12,41 @@ const router = express.Router();
  *   description: Busca as consultas do sistema
  */
 
+/**
+* @swagger
+* components:
+*   schemas:
+*     Consultas:
+*       type: Array
+*       properties:
+*         id:
+*           type: integer
+*           description: ID único da consulta
+*         nome_paciente:
+*           type: integer
+*           description: nome do paciente associado
+*         nome_profissional:
+*           type: integer
+*           description: nome do profissional associado
+*         data_agendamento:
+*           type: string
+*           format: date-time
+*           description: Data e hora da consulta
+*         situacao:
+*           type: string
+*           enum: [Agendada, Confirmada, Cancelada, Realizada]
+*           description: situacao da consulta
+*         obs:
+*           type: string
+*           description: Observações adicionais sobre a consulta
+*       example:
+*         id: 1
+*         nome_paciente: "João da Silva"
+*         nome_profissional: "Dr. Maria Oliveira"
+*         data_agendamento: "2025-05-02T14:00:00Z"
+*         situacao: "Agendada"
+*         observacoes: "Consulta de rotina"
+*/
 
 /**
  * @swagger
@@ -27,7 +62,7 @@ const router = express.Router();
  *         content:
  *           application/json:
  *             schema:
- *               type: array
+ *               $ref: '#/components/schemas/Consultas'
  *       401:
  *         description: Token inválido ou ausente
  */

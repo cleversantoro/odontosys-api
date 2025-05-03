@@ -13,6 +13,51 @@ const router = express.Router();
 
 /**
  * @swagger
+ * components:
+ *   schemas:
+ *     DadoClinico:
+ *       type: object
+ *       required:
+ *         - grupoSanguineo
+ *         - pacienteId
+ *       properties:
+ *         id:
+ *           type: integer
+ *           description: ID único do dado clínico
+ *         grupoSanguineo:
+ *           type: string
+ *           description: Grupo sanguíneo do paciente
+ *         alergias:
+ *           type: string
+ *           description: Alergias conhecidas do paciente
+ *         medicamentosContinuos:
+ *           type: string
+ *           description: Medicamentos de uso contínuo do paciente
+ *         doencasPreExistentes:
+ *           type: string
+ *           description: Doenças pré-existentes do paciente
+ *         planoSaude:
+ *           type: string
+ *           description: Nome do plano de saúde do paciente
+ *         numeroApolice:
+ *           type: string
+ *           description: Número da apólice do plano de saúde
+ *         pacienteId:
+ *           type: integer
+ *           description: ID do paciente associado
+ *       example:
+ *         id: 1
+ *         grupoSanguineo: "O+"
+ *         alergias: "Amendoim, Penicilina"
+ *         medicamentosContinuos: "Insulina"
+ *         doencasPreExistentes: "Diabetes"
+ *         planoSaude: "Unimed"
+ *         numeroApolice: "123456789"
+ *         pacienteId: 42
+ */
+
+/**
+ * @swagger
  * /api/dados-clinicos:
  *   post:
  *     summary: Cadastrar dados clínicos de um paciente
@@ -24,22 +69,7 @@ const router = express.Router();
  *       content:
  *         application/json:
  *           schema:
- *             type: object
- *             properties:
- *               grupoSanguineo:
- *                 type: string
- *               alergias:
- *                 type: string
- *               medicamentosContinuos:
- *                 type: string
- *               doencasPreExistentes:
- *                 type: string
- *               planoSaude:
- *                 type: string
- *               numeroApolice:
- *                 type: string
- *               pacienteId:
- *                 type: integer
+ *             $ref: '#/components/schemas/DadoClinico'
  *     responses:
  *       201:
  *         description: Dados clínicos cadastrados
@@ -59,7 +89,7 @@ router.post("/", authenticateToken, createDadoClinico);
  *         name: pacienteId
  *         required: true
  *         schema:
- *           type: integer
+ *           $ref: '#/components/schemas/DadoClinico'
  *     responses:
  *       200:
  *         description: Dados clínicos encontrados
@@ -87,20 +117,7 @@ router.get("/:pacienteId", authenticateToken, getDadoClinicoByPaciente);
  *       content:
  *         application/json:
  *           schema:
- *             type: object
- *             properties:
- *               grupoSanguineo:
- *                 type: string
- *               alergias:
- *                 type: string
- *               medicamentosContinuos:
- *                 type: string
- *               doencasPreExistentes:
- *                 type: string
- *               planoSaude:
- *                 type: string
- *               numeroApolice:
- *                 type: string
+ *             $ref: '#/components/schemas/DadoClinico'
  *     responses:
  *       200:
  *         description: Dados clínicos atualizados
@@ -132,4 +149,3 @@ router.put("/:pacienteId", authenticateToken, updateDadoClinico);
 router.delete("/:pacienteId", authenticateToken, deleteDadoClinico);
 
 module.exports = router;
-s
