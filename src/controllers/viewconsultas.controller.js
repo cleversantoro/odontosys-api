@@ -1,5 +1,6 @@
 // controllers/userViewController.js
 const  Consultas  = require('../views/consultas.model');
+const  ConsultasCompleta  = require('../views/consultasCompletas.model');
 
 exports.getConsultas = async (req, res) => {
     try {
@@ -10,3 +11,11 @@ exports.getConsultas = async (req, res) => {
     }
   };
   
+  exports.getConsultasCompleta = async (req, res) => {
+    try {
+      const consultascompleta = await ConsultasCompleta.findAll();
+      res.json(consultascompleta);
+    } catch (error) {
+      res.status(500).json({ error: "Erro ao buscar consultas" });
+    }
+  };

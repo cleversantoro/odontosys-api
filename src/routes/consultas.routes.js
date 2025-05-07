@@ -1,6 +1,6 @@
 // routes/userViewRoutes.js
 const express = require('express');
-const { getConsultas } = require('../controllers/viewconsultas.controller');
+const { getConsultas, getConsultasCompleta } = require('../controllers/viewconsultas.controller');
 //const authenticateToken = require('../middlewares/auth.middleware');
 
 const router = express.Router();
@@ -67,5 +67,25 @@ const router = express.Router();
  *         description: Token inválido ou ausente
  */
 router.get('/',  getConsultas);
+
+/**
+ * @swagger
+ * /api/consultas/completa:
+ *   get:
+ *     summary: Lista todos as agendamentos registrados
+ *     tags: [Consultas]
+ *     security:
+ *       - BearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Lista de consultas retornada com sucesso
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Consultas'
+ *       401:
+ *         description: Token inválido ou ausente
+ */
+router.get('/completa',  getConsultasCompleta);
 
 module.exports = router;

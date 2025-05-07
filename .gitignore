@@ -22,3 +22,6 @@ build/
 # System files
 .DS_Store
 Thumbs.db
+.vs/VSWorkspaceState.json
+.vs/VSWorkspaceState.json
+.vs/odontosys-api/v17/.wsuo

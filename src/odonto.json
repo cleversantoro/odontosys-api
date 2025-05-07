@@ -972,6 +972,34 @@
         }
       }
     },
+    "/api/consultas/completa": {
+      "get": {
+        "summary": "Lista todos as agendamentos registrados",
+        "tags": [
+          "Consultas"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de consultas retornada com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Consultas"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token inválido ou ausente"
+          }
+        }
+      }
+    },
     "/api/dados-clinicos": {
       "post": {
         "summary": "Cadastrar dados clínicos de um paciente",
@@ -2135,6 +2163,48 @@
           },
           "500": {
             "description": "Erro interno do servidor"
+          }
+        }
+      }
+    },
+    "/api/pacientes/{id}/detalhado": {
+      "get": {
+        "summary": "Obtém um paciente pelo ID com endereco e documentos",
+        "tags": [
+          "Pacientes"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "ID do paciente a ser recuperado"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Paciente encontrado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Paciente"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token inválido ou ausente"
+          },
+          "404": {
+            "description": "Paciente não encontrado"
           }
         }
       }

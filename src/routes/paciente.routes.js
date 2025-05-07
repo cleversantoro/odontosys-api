@@ -1,6 +1,6 @@
 const express = require("express");
 const { authenticateToken } = require("../middlewares/auth.middleware");
-const { createPaciente, getPacientes, getPacienteById, updatePaciente, deletePaciente } = require("../controllers/paciente.controller");
+const { createPaciente, getPacientes, getPacienteById, updatePaciente, deletePaciente, getPacienteDetalhado } = require("../controllers/paciente.controller");
 const { createPacienteCadastro } = require("../controllers/pacienteCadastro.controller");
 
 const router = express.Router();
@@ -334,5 +334,35 @@ router.delete("/:id", authenticateToken, deletePaciente);
  *         description: Erro interno do servidor
  */
 router.post("/cadastro", authenticateToken, createPacienteCadastro);
+
+
+/**
+ * @swagger
+ * /api/pacientes/{id}/detalhado:
+ *   get:
+ *     summary: Obtém um paciente pelo ID com endereco e documentos
+ *     tags: [Pacientes]
+ *     security:
+ *       - BearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: ID do paciente a ser recuperado 
+ *     responses:
+ *       200:
+ *         description: Paciente encontrado com sucesso
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Paciente'
+ *       404:
+ *         description: Paciente não encontrado
+ *       401:
+ *         description: Token inválido ou ausente
+ */
+router.get("/:id/detalhado", authenticateToken, getPacienteDetalhado);
 
 module.exports = router;

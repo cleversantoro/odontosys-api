@@ -28,4 +28,12 @@ const Paciente = sequelize.define("Pacientes", {
 // Relacionamento: Um usuário pode registrar vários pacientes
 Paciente.belongsTo(Usuario, { foreignKey: "registeredBy", as: "usuario" });
 
+Paciente.associate = (models) => {
+  Paciente.belongsToMany(models.Doenca, {
+    through: 'PacienteDoencas',
+    foreignKey: 'pacienteId',
+    otherKey: 'doencaId'
+  });
+};
+
 module.exports = Paciente;

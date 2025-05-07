@@ -2,35 +2,40 @@ const fs = require('fs');
 const path = require('path');
 const { Sequelize, DataTypes } = require('sequelize');
 
-// Configura a conexão
-const sequelize = new Sequelize(
-  'odonto',
-  'root',
-  'root',
-  {
-    //host: 'db',
-    host: 'localhost',  
-    dialect: 'mysql',
-  }
-);
+// Cria a instância do Sequelize
+const sequelize = new Sequelize('odonto', 'root', 'root', {
+  //host: 'db', 
+  host: 'localhost',
+  dialect: 'mysql',
+});
 
 const db = {};
 const modelsPath = path.join(__dirname);
 
-// Carrega todos os arquivos da pasta models
+// Primeiro, carrega todos os models
 fs.readdirSync(modelsPath)
-  .filter(file => file !== 'index.js' && file.endsWith('.js'))
-  
+  .filter(file => file.endsWith('.model.js'))
   .forEach(file => {
     const model = require(path.join(modelsPath, file));
-    (sequelize, DataTypes);
     db[model.name] = model;
-  
   });
 
-// Aqui você pode definir os relacionamentos, se houver
+// Depois, roda setup de cada model se existir
+fs.readdirSync(modelsPath)
+  .filter(file => file.endsWith('.setup.js'))
+  .forEach(file => {
+    const setupFn = require(path.join(modelsPath, file));
+    // Pega o nome base do arquivo, tipo "endereco" de "endereco.setup.js"
+    const baseName = file.split('.')[0];
+    const model = db[Object.keys(db).find(k => k.toLowerCase().includes(baseName))];
+    if (model) setupFn(model, db);
+  });
+
+// Aplica .associate se tiver
 Object.keys(db).forEach(modelName => {
-  if (db[modelName].associate) { db[modelName].associate(db); }
+  if (db[modelName].associate) {
+    db[modelName].associate(db);
+  }
 });
 
 db.sequelize = sequelize;
