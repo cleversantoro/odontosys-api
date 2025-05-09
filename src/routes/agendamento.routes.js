@@ -84,7 +84,7 @@ router.get("/", authenticateToken, getAgendamentos);
  *       - BearerAuth: []
  *     parameters:
  *       - in: path
- *         nome: id
+ *         name: id
  *         required: true
  *         schema:
  *           type: integer
@@ -120,10 +120,6 @@ router.get("/:id", authenticateToken, getAgendamentosPorId);
  *     responses:
  *       201:
  *         description: Agendamentos agendada com sucesso
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Agendamentos'
  *       400:
  *         description: Dados inválidos
  *       401:
@@ -141,7 +137,7 @@ router.post("/", authenticateToken, createAgendamentos);
  *       - BearerAuth: []
  *     parameters:
  *       - in: path
- *         nome: id
+ *         name: id
  *         required: true
  *         schema:
  *           type: integer
@@ -153,13 +149,13 @@ router.post("/", authenticateToken, createAgendamentos);
  *           schema:
  *             type: object
  *             properties:
- *               date:
+ *               data:
  *                 type: string
  *                 format: date-time
  *               status:
  *                 type: string
  *                 enum: ["Agendado", "Confirmado", "Cancelado", "Realizado"]
- *               notes:
+ *               obs:
  *                 type: string
  *     responses:
  *       200:
@@ -183,7 +179,7 @@ router.put("/:id", authenticateToken, updateAgendamentos);
  *       - BearerAuth: []
  *     parameters:
  *       - in: path
- *         nome: id
+ *         name: id
  *         required: true
  *         schema:
  *           type: integer

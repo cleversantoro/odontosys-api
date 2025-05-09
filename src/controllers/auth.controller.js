@@ -1,7 +1,6 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
-const Usuario = require("../models/usuario.model");
-const Token = require("../models/token.model");
+const { Usuario, Token } = require('../models');
 
 const generateTokens = (usuario) => {
   const accessToken = jwt.sign({ id: usuario.id, email: usuario.email }, process.env.JWT_SECRET, { expiresIn: "1h" });
@@ -49,7 +48,7 @@ exports.refresh = async (req, res) => {
 
     const storedToken = await Token.findOne({ where: { token } });
     //console.log(storedToken);
-    
+
     if (!storedToken) return res.status(403).json({ error: "Refresh Token inválido" });
 
     const decoded = jwt.verify(token, process.env.JWT_REFRESH_SECRET);

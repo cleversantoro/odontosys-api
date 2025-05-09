@@ -74,7 +74,7 @@ app.use((err, req, res, next) => {
   res.status(500).json({ message: "Erro interno do servidor!" });
 });
 
-db.sequelize.sync({ force: FORCE_SYNC })
+db.sequelize.sync() //{ force: FORCE_SYNC }
   .then(() => {
     console.log("📦 Banco de dados conectado!");
     logger.info("Servidor iniciado");

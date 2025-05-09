@@ -1,19 +1,18 @@
-const Agendamentos = require("../models/agendamento.model");
+const { Agendamento } = require('../models');
 const io = require("../config/socket"); // WebSockets para notificações em tempo real
-
 
 exports.getAgendamentos = async (req, res) => {
   try {
-    const agendamentos = await Agendamentos.findAll({ include: ["paciente", "profissional", "usuario"] });
+    const agendamentos = await Agendamento.findAll({ include: ["Pacientes", "Profissionais", "Usuarios"] });
     res.json(agendamentos);
   } catch (error) {
-    res.status(500).json({ error: "Erro ao buscar agendamentos" });
+    res.status(500).json({"Erro ao buscar agendamentos: ":error});
   }
 };
 
 exports.getAgendamentosPorId = async (req, res) => {
   try {
-    const agendamentos = await Agendamentos.findByPk(req.params.id, { include: ["paciente", "profissional", "usuario"] });
+    const agendamentos = await Agendamento.findByPk(req.params.id, { include: ["Pacientes", "Profissionais", "Usuarios"] });
 
     if (!agendamentos) return res.status(404).json({ error: "Agendamentos não encontrada" });
 
@@ -25,7 +24,7 @@ exports.getAgendamentosPorId = async (req, res) => {
 
 exports.deleteAgendamentos = async (req, res) => {
   try {
-    const agendamentos = await Agendamentos.findByPk(req.params.id);
+    const agendamentos = await Agendamento.findByPk(req.params.id);
 
     if (!agendamentos) return res.status(404).json({ error: "Agendamentos não encontrada" });
 
@@ -44,7 +43,7 @@ exports.createAgendamentos = async (req, res) => {
     const { pacienteId, profissionalId, data, status, obs } = req.body;
     const registeredBy = req.usuario.id; // Usuário autenticado
 
-    const newAgendamentos = await Agendamentos.create({ pacienteId, profissionalId, data, status, obs, registeredBy });
+    const newAgendamentos = await Agendamento.create({ pacienteId, profissionalId, data, status, obs, registeredBy });
 
     io.emit("agendamentosCreated", newAgendamentos); // Notifica em tempo real
 
@@ -58,7 +57,7 @@ exports.createAgendamentos = async (req, res) => {
 exports.updateAgendamentos = async (req, res) => {
   try {
     const { data, status, obs } = req.body;
-    const agendamentos = await Agendamentos.findByPk(req.params.id);
+    const agendamentos = await Agendamento.findByPk(req.params.id);
 
     if (!agendamentos) return res.status(404).json({ error: "Agendamentos não encontrada" });
 

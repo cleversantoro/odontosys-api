@@ -1,4 +1,4 @@
-const Telefone = require("../models/telefone.model");
+const {Telefone} = require('../models');
 
 exports.createTelefone = async (req, res) => {
   try {

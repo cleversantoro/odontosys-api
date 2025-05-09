@@ -16,7 +16,8 @@ const modelsPath = path.join(__dirname);
 fs.readdirSync(modelsPath)
   .filter(file => file.endsWith('.model.js'))
   .forEach(file => {
-    const model = require(path.join(modelsPath, file));
+    const modelFn = require(path.join(modelsPath, file));
+    const model = modelFn(sequelize, DataTypes);
     db[model.name] = model;
   });
 
@@ -25,7 +26,6 @@ fs.readdirSync(modelsPath)
   .filter(file => file.endsWith('.setup.js'))
   .forEach(file => {
     const setupFn = require(path.join(modelsPath, file));
-    // Pega o nome base do arquivo, tipo "endereco" de "endereco.setup.js"
     const baseName = file.split('.')[0];
     const model = db[Object.keys(db).find(k => k.toLowerCase().includes(baseName))];
     if (model) setupFn(model, db);

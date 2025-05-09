@@ -1,4 +1,4 @@
-const Profissional = require("../models/profissional.model");
+const {Profissional} = require('../models');
 
 exports.createProfissional = async (req, res) => {
     try {

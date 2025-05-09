@@ -1,6 +1,5 @@
-const Pagamento = require("../models/pagamento.model");
 const io = require("../config/socket");
-
+const {Pagamento} = require('../models');
 
 exports.createPagamento = async (req, res) => {
   try {

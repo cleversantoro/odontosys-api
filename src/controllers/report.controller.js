@@ -1,7 +1,6 @@
 const Pagamento = require("../models/pagamento.model");
-const Despesa = require("../models/despesa.model");
-const Agendamento = require("../models/agendamento.model");
 const { generatePDF } = require("../services/pdf.service");
+const { Agendamento, Despesa } = require('../models');
 
 exports.generateFinancialReport = async (req, res) => {
   try {

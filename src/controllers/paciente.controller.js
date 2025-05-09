@@ -1,5 +1,5 @@
 const PacienteService = require("../services/paciente.services");
-const Paciente = require("../models/paciente.model");
+const {Paciente} = require('../models');
 
 exports.getPacienteDetalhado = async (req, res) => {
   try {

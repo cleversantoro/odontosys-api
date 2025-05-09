@@ -1,6 +1,6 @@
 const express = require("express");
 const { authenticateToken } = require("../middlewares/auth.middleware");
-const { createDadoClinico, getDadoClinicoByPaciente, updateDadoClinico, deleteDadoClinico } = require("../controllers/dadoClinico.controller");
+const { createDadoClinico, getDadoClinicoByid, getDadoClinico, updateDadoClinico, deleteDadoClinico } = require("../controllers/dadoClinico.controller");
 
 const router = express.Router();
 
@@ -58,7 +58,29 @@ const router = express.Router();
 
 /**
  * @swagger
- * /api/dados-clinicos:
+ * /api/dadosClinicos:
+ *   get:
+ *     summary: Buscar dados clínicos de um paciente
+ *     tags: [Dados Clínicos]
+ *     security:
+ *       - BearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: pacienteId
+ *         required: true
+ *         schema:
+ *           $ref: '#/components/schemas/DadoClinico'
+ *     responses:
+ *       200:
+ *         description: Dados clínicos encontrados
+ *       404:
+ *         description: Dados clínicos não encontrados
+ */
+router.get("/", authenticateToken, getDadoClinico);
+
+/**
+ * @swagger
+ * /api/dadosClinicos:
  *   post:
  *     summary: Cadastrar dados clínicos de um paciente
  *     tags: [Dados Clínicos]
@@ -78,7 +100,7 @@ router.post("/", authenticateToken, createDadoClinico);
 
 /**
  * @swagger
- * /api/dados-clinicos/{pacienteId}:
+ * /api/dadosClinicos/{Id}:
  *   get:
  *     summary: Buscar dados clínicos de um paciente
  *     tags: [Dados Clínicos]
@@ -96,11 +118,11 @@ router.post("/", authenticateToken, createDadoClinico);
  *       404:
  *         description: Dados clínicos não encontrados
  */
-router.get("/:pacienteId", authenticateToken, getDadoClinicoByPaciente);
+router.get("/:id", authenticateToken, getDadoClinicoByid);
 
 /**
  * @swagger
- * /api/dados-clinicos/{pacienteId}:
+ * /api/dadosClinicos/{Id}:
  *   put:
  *     summary: Atualizar dados clínicos de um paciente
  *     tags: [Dados Clínicos]
@@ -124,11 +146,11 @@ router.get("/:pacienteId", authenticateToken, getDadoClinicoByPaciente);
  *       404:
  *         description: Dados clínicos não encontrados
  */
-router.put("/:pacienteId", authenticateToken, updateDadoClinico);
+router.put("/:id", authenticateToken, updateDadoClinico);
 
 /**
  * @swagger
- * /api/dados-clinicos/{pacienteId}:
+ * /api/dadosClinicos/{Id}:
  *   delete:
  *     summary: Excluir dados clínicos de um paciente
  *     tags: [Dados Clínicos]
@@ -146,6 +168,6 @@ router.put("/:pacienteId", authenticateToken, updateDadoClinico);
  *       404:
  *         description: Dados clínicos não encontrados
  */
-router.delete("/:pacienteId", authenticateToken, deleteDadoClinico);
+router.delete("/:id", authenticateToken, deleteDadoClinico);
 
 module.exports = router;

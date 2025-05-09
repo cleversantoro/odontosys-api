@@ -1,9 +1,5 @@
 const { sequelize } = require("../config/database");
-const Paciente = require("../models/paciente.model");
-const Endereco = require("../models/endereco.model");
-const Telefone = require("../models/telefone.model");
-const Documento = require("../models/documento.model");
-const DadoClinico = require("../models/dadoClinico.model"); // supondo que tenha um model pra isso
+const { Paciente, Endereco, Telefone, Documento, DadoClinico } = require('../models');
 
 exports.createPacienteCadastro = async (req, res) => {
   const t = await sequelize.transaction(); // <- Transação pra garantir tudo ou nada

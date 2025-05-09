@@ -1,16 +1,16 @@
-const { DataTypes } = require("sequelize");
-const { sequelize } = require("../config/database");
-const Usuario = require("./usuario.model");
+module.exports = (sequelize, DataTypes) => {
+  const Despesa = sequelize.define("Despesa", {
+    id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
+    descricao: { type: DataTypes.STRING, allowNull: false },
+    valor: { type: DataTypes.FLOAT, allowNull: false },
+    categoria: { type: DataTypes.STRING, allowNull: false },
+    data: { type: DataTypes.DATE, allowNull: false },
+    registeredBy: { type: DataTypes.INTEGER, allowNull: false }
+  }, { tableName: 'Despesas', timestamps: true });
 
-const Despesa = sequelize.define("Despesas", {
-  id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
-  descricao: { type: DataTypes.STRING, allowNull: false },
-  valor: { type: DataTypes.FLOAT, allowNull: false },
-  categoria: { type: DataTypes.STRING, allowNull: false },
-  data: { type: DataTypes.DATE, allowNull: false },
-  registeredBy: { type: DataTypes.INTEGER, allowNull: false } 
-});
+  Despesa.associate = (models) => {
+    Despesa.belongsTo(models.Usuario, { foreignKey: "registeredBy", as: "Usuarios" });
+  };
 
-Despesa.belongsTo(Usuario, { foreignKey: "registeredBy", as: "usuario" });
-
-module.exports = Despesa;
+  return Despesa;
+};

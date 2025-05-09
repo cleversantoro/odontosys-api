@@ -645,14 +645,7 @@
         },
         "responses": {
           "201": {
-            "description": "Agendamentos agendada com sucesso",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Agendamentos"
-                }
-              }
-            }
+            "description": "Agendamentos agendada com sucesso"
           },
           "400": {
             "description": "Dados inválidos"
@@ -677,7 +670,7 @@
         "parameters": [
           {
             "in": "path",
-            "nome": "id",
+            "name": "id",
             "required": true,
             "schema": {
               "type": "integer"
@@ -717,7 +710,7 @@
         "parameters": [
           {
             "in": "path",
-            "nome": "id",
+            "name": "id",
             "required": true,
             "schema": {
               "type": "integer"
@@ -732,7 +725,7 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "date": {
+                  "data": {
                     "type": "string",
                     "format": "date-time"
                   },
@@ -745,7 +738,7 @@
                       "Realizado"
                     ]
                   },
-                  "notes": {
+                  "obs": {
                     "type": "string"
                   }
                 }
@@ -781,7 +774,7 @@
         "parameters": [
           {
             "in": "path",
-            "nome": "id",
+            "name": "id",
             "required": true,
             "schema": {
               "type": "integer"
@@ -944,63 +937,230 @@
         }
       }
     },
+    "/api/consultas/vwconsultas": {
+      "get": {
+        "summary": "Lista todos as agendamentos registrados",
+        "tags": [
+          "Consultas"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de consultas retornada com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Consultas"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token inválido ou ausente"
+          }
+        }
+      }
+    },
+    "/api/consultas/vwcompleta": {
+      "get": {
+        "summary": "Lista todos as agendamentos registrados",
+        "tags": [
+          "Consultas"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de consultas retornada com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Consultas"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token inválido ou ausente"
+          }
+        }
+      }
+    },
     "/api/consultas": {
-      "get": {
-        "summary": "Lista todos as agendamentos registrados",
+      "post": {
+        "summary": "Cria uma consulta vinculada a um agendamento",
         "tags": [
           "Consultas"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "agendamentoId": {
+                    "type": "integer"
+                  },
+                  "anamnese": {
+                    "type": "string"
+                  },
+                  "diagnostico": {
+                    "type": "string"
+                  },
+                  "prescricao": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Consulta criada com sucesso"
+          },
+          "404": {
+            "description": "Agendamento não encontrado"
+          }
+        }
+      },
+      "get": {
+        "summary": "Lista todas as consultas",
+        "tags": [
+          "Consultas"
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de consultas"
+          }
+        }
+      }
+    },
+    "/api/consultas/{id}": {
+      "get": {
+        "summary": "Retorna uma consulta pelo ID",
+        "tags": [
+          "Consultas"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "description": "ID da consulta"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Consulta encontrada"
+          },
+          "404": {
+            "description": "Consulta não encontrada"
+          }
+        }
+      },
+      "put": {
+        "summary": "Atualiza uma consulta",
+        "tags": [
+          "Consultas"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "description": "ID da consulta"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Consulta"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Consulta atualizada com sucesso"
+          },
+          "404": {
+            "description": "Consulta não encontrada"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Remove uma consulta",
+        "tags": [
+          "Consultas"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "description": "ID da consulta"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Consulta removida"
+          },
+          "404": {
+            "description": "Consulta não encontrada"
+          }
+        }
+      }
+    },
+    "/api/dadosClinicos": {
+      "get": {
+        "summary": "Buscar dados clínicos de um paciente",
+        "tags": [
+          "Dados Clínicos"
         ],
         "security": [
           {
             "BearerAuth": []
           }
         ],
-        "responses": {
-          "200": {
-            "description": "Lista de consultas retornada com sucesso",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Consultas"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Token inválido ou ausente"
-          }
-        }
-      }
-    },
-    "/api/consultas/completa": {
-      "get": {
-        "summary": "Lista todos as agendamentos registrados",
-        "tags": [
-          "Consultas"
-        ],
-        "security": [
+        "parameters": [
           {
-            "BearerAuth": []
+            "in": "path",
+            "name": "pacienteId",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/DadoClinico"
+            }
           }
         ],
         "responses": {
           "200": {
-            "description": "Lista de consultas retornada com sucesso",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Consultas"
-                }
-              }
-            }
+            "description": "Dados clínicos encontrados"
           },
-          "401": {
-            "description": "Token inválido ou ausente"
+          "404": {
+            "description": "Dados clínicos não encontrados"
           }
         }
-      }
-    },
-    "/api/dados-clinicos": {
+      },
       "post": {
         "summary": "Cadastrar dados clínicos de um paciente",
         "tags": [
@@ -1028,7 +1188,7 @@
         }
       }
     },
-    "/api/dados-clinicos/{pacienteId}": {
+    "/api/dadosClinicos/{Id}": {
       "get": {
         "summary": "Buscar dados clínicos de um paciente",
         "tags": [

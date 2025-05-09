@@ -1,7 +1,5 @@
 const { sendEmail } = require("../services/email.service");
-const Agendamento = require("../models/agendamento.model");
-const Pagamento = require("../models/pagamento.model");
-const Paciente = require("../models/paciente.model");
+const {Agendamento,Pagamento,Paciente} = require('../models');
 
 exports.sendAgendamentosNotification = async (req, res) => {
   try {

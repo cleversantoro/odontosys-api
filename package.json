@@ -5,7 +5,9 @@
   "scripts": {
     "start": "node src/server.js",
     "dev": "nodemon src/server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "seed:up": "sequelize db:seed:all --seed seed_index.js", 
+    "seed:down": "sequelize db:seed:undo:all --seed seed_index.js"     
   },
   "keywords": [],
   "author": "",
@@ -26,6 +28,7 @@
     "nodemailer": "^6.10.0",
     "pdfkit": "^0.16.0",
     "sequelize": "^6.37.6",
+    "sequelize-cli": "^6.6.3",
     "socket.io": "^4.8.1",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1",
@@ -35,3 +38,4 @@
     "nodemon": "^3.1.9"
   }
 }
+

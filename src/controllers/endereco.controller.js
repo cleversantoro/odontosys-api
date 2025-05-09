@@ -1,4 +1,5 @@
-const Endereco = require("../models/endereco.model");
+const {Endereco} = require('../models');
+
 
 exports.createEndereco = async (req, res) => {
   try {

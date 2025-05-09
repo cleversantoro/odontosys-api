@@ -1,6 +1,5 @@
 const { createGoogleCalendarEvent } = require("../services/googleCalendar.service");
-const Agendamento = require("../models/agendamento.model");
-const Paciente = require("../models/paciente.model");
+const { Paciente, Agendamento } = require('../models');
 
 exports.createCalendarEvent = async (req, res) => {
   try {
