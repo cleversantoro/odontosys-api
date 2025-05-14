@@ -3,16 +3,16 @@ const io = require("../config/socket"); // WebSockets para notificações em tem
 
 exports.getAgendamentos = async (req, res) => {
   try {
-    const agendamentos = await Agendamento.findAll({ include: ["Pacientes", "Profissionais", "Usuarios"] });
+    const agendamentos = await Agendamento.findAll({ include: ["Pacientes", "Profissionais", "Convenios" ,"Usuarios"] });
     res.json(agendamentos);
   } catch (error) {
-    res.status(500).json({"Erro ao buscar agendamentos: ":error});
+    res.status(500).json({ "Erro ao buscar agendamentos: ": error });
   }
 };
 
 exports.getAgendamentosPorId = async (req, res) => {
   try {
-    const agendamentos = await Agendamento.findByPk(req.params.id, { include: ["Pacientes", "Profissionais", "Usuarios"] });
+    const agendamentos = await Agendamento.findByPk(req.params.id, { include: ["Pacientes", "Profissionais", "Convenios" ,"Usuarios"] });
 
     if (!agendamentos) return res.status(404).json({ error: "Agendamentos não encontrada" });
 
@@ -40,10 +40,10 @@ exports.deleteAgendamentos = async (req, res) => {
 
 exports.createAgendamentos = async (req, res) => {
   try {
-    const { pacienteId, profissionalId, data, status, obs } = req.body;
+    const { pacienteId, profissionalId, convenioId, data, status, obs } = req.body;
     const registeredBy = req.usuario.id; // Usuário autenticado
 
-    const newAgendamentos = await Agendamento.create({ pacienteId, profissionalId, data, status, obs, registeredBy });
+    const newAgendamentos = await Agendamento.create({ pacienteId, profissionalId, convenioId, data, status, obs, registeredBy });
 
     io.emit("agendamentosCreated", newAgendamentos); // Notifica em tempo real
 

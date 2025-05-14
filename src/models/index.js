@@ -3,11 +3,15 @@ const path = require('path');
 const { Sequelize, DataTypes } = require('sequelize');
 
 // Cria a instância do Sequelize
-const sequelize = new Sequelize('odonto', 'root', 'root', {
-  //host: 'db', 
-  host: 'localhost',
-  dialect: 'mysql',
-});
+const sequelize = new Sequelize(
+  process.env.DB_NAME || 'odonto',
+  process.env.DB_USER || 'root',
+  process.env.DB_PASSWORD || 'root',
+  {
+    host: process.env.DB_HOST || 'localhost',
+    dialect: 'mysql',
+  }
+);
 
 const db = {};
 const modelsPath = path.join(__dirname);

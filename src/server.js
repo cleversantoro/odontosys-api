@@ -30,7 +30,7 @@ const logger = winston.createLogger({
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutos
-  max: 100, // Limite de 100 requisições por IP
+  max: 1000, // Limite de 1000 requisições por IP
 });
 
 const corsOptions = {

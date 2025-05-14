@@ -1,5 +1,5 @@
 // src/controllers/consulta.controller.js
-const { Consulta, Agendamento, Paciente, Profissional } = require('../models');
+const { Consulta, Agendamento, Paciente, Profissional, Convenio } = require('../models');
 
 exports.criarConsultaPorAgendamento = async (req, res) => {
     try {
@@ -12,6 +12,7 @@ exports.criarConsultaPorAgendamento = async (req, res) => {
             agendamentoId,
             pacienteId: agendamento.pacienteId,
             profissionalId: agendamento.profissionalId,
+            convenioId: agendamento.convenioId, // herda do agendamento
             dataHora: new Date(),
             anamnese,
             diagnostico,
@@ -35,12 +36,13 @@ exports.listarConsultas = async (req, res) => {
             include: [
                 { model: Paciente, as: 'Paciente' },
                 { model: Profissional, as: 'Profissional' },
-                { model: Agendamento, as: 'Agendamento' }
+                { model: Agendamento, as: 'Agendamento' },
+                { model: Convenio, as: 'Convenio' }
             ]
         });
         res.json(consultas);
     } catch (error) {
-        res.status(500).json({ message: 'Erro ao listar' });
+        res.status(500).json({ message: `Erro ao listar: ${error}` });
     }
 };
 
@@ -50,7 +52,8 @@ exports.obterConsultaPorId = async (req, res) => {
         include: [
             { model: Paciente, as: 'Paciente' },
             { model: Profissional, as: 'Profissional' },
-            { model: Agendamento, as: 'Agendamento' }
+            { model: Agendamento, as: 'Agendamento' },
+            { model: Convenio, as: 'Convenio' }
         ]
     });
 
