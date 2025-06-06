@@ -77,10 +77,10 @@ app.use((err, req, res, next) => {
 db.sequelize.sync() //{ force: FORCE_SYNC }
   .then(() => {
     console.log("📦 Banco de dados conectado!");
-    logger.info("Servidor iniciado");
-    server.listen(PORT, () => console.log(`🚀 Servidor rodando na porta ${PORT}`));
     console.log(`🌐 Documentação disponível em http://localhost:${PORT}/api/docs`);
     console.log(`🔧 Ambiente: ${process.env.NODE_ENV || "development"}`);
+    logger.info("Servidor iniciado");
+    server.listen(PORT, () => console.log(`🚀 Servidor rodando na porta ${PORT}`));
   })
   .catch(err => {
     console.error("❌ Erro ao conectar ao banco de dados:", err);
