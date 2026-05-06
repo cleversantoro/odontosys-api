@@ -56,10 +56,23 @@ const router = express.Router();
  * @swagger
  * /api/agendamentos:
  *   get:
- *     summary: Lista todos as agendamentos registrados
+ *     summary: Lista agendamentos (todos ou filtrados por período)
  *     tags: [Agendamentos]
  *     security:
  *       - BearerAuth: []
+ *     parameters:
+ *       - in: query
+ *         name: inicio
+ *         schema:
+ *           type: string
+ *           format: date
+ *         description: Data de início do período (ISO 8601, ex: 2026-05-01)
+ *       - in: query
+ *         name: fim
+ *         schema:
+ *           type: string
+ *           format: date
+ *         description: Data de fim do período (ISO 8601, ex: 2026-05-31)
  *     responses:
  *       200:
  *         description: Lista de agendamentos retornada com sucesso
@@ -69,6 +82,8 @@ const router = express.Router();
  *               type: array
  *               items:
  *                 $ref: '#/components/schemas/Agendamentos'
+ *       400:
+ *         description: Parâmetros de período inválidos
  *       401:
  *         description: Token inválido ou ausente
  */

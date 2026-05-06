@@ -16,6 +16,7 @@ const telefoneRoutes = require("./telefone.routes");
 const consultaRoutes = require("./consultas.routes");
 const documentoRoutes = require("./documento.routes");
 const dadosClinicosRoutes = require("./dadoClinico.routes");
+const convenioRoutes = require("./convenio.routes");
 
 const router = express.Router();
 
@@ -35,6 +36,7 @@ router.use("/telefones", telefoneRoutes);
 router.use("/consultas", consultaRoutes); // Adicionando a rota de consultas
 router.use("/documentos", documentoRoutes);
 router.use("/dadosClinicos", dadosClinicosRoutes);
+router.use("/convenios", convenioRoutes);
 
 module.exports = router;
 

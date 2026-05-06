@@ -1,12 +1,33 @@
-const { Agendamento } = require('../models');
+const { Agendamento, Sequelize } = require('../models');
+const { Op } = Sequelize;
 const io = require("../config/socket"); // WebSockets para notificações em tempo real
 
 exports.getAgendamentos = async (req, res) => {
   try {
-    const agendamentos = await Agendamento.findAll({ include: ["Pacientes", "Profissionais", "Convenios" ,"Usuarios"] });
+    const { inicio, fim } = req.query;
+    const where = {};
+
+    if (inicio && fim) {
+      const dataInicio = new Date(inicio);
+      const dataFim = new Date(fim);
+      if (isNaN(dataInicio) || isNaN(dataFim)) {
+        return res.status(400).json({ error: 'Parâmetros inicio e fim devem ser datas válidas (ISO 8601)' });
+      }
+      // garante que fim inclui o dia inteiro
+      dataFim.setHours(23, 59, 59, 999);
+      where.data = { [Op.between]: [dataInicio, dataFim] };
+    } else if (inicio || fim) {
+      return res.status(400).json({ error: 'Informe ambos os parâmetros: inicio e fim' });
+    }
+
+    const agendamentos = await Agendamento.findAll({
+      where,
+      include: ["Pacientes", "Profissionais", "Convenios", "Usuarios"],
+      order: [['data', 'ASC']],
+    });
     res.json(agendamentos);
   } catch (error) {
-    res.status(500).json({ "Erro ao buscar agendamentos: ": error });
+    res.status(500).json({ error: 'Erro ao buscar agendamentos' });
   }
 };
 
